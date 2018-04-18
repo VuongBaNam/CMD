@@ -1,5 +1,8 @@
 package TestCase;
 
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -7,19 +10,23 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
 
 public class ExecuteInfo implements Runnable{
+
+    public static final String IP_CONTROLLER = "192.168.101.15";
+    public static final int PORT = 5000;
+
     BlockingQueue<String> queue = null;
     protected List<Item> listFlow1;//luu cac goi tin dau tien cua cac flow trong 6s đầu
     protected List<Double> listIAT1;//luu danh sach cac paket Inter-Arrival Time cua tung flow trong 6s đầu
+    private Socket socket;
+    private ObjectOutputStream out ;
 
-    protected List<Item> listFlow2;//luu cac goi tin dau tien cua cac flow trong 6s sau
-    protected List<Double> listIAT2;//luu danh sach cac paket Inter-Arrival Time cua tung flow trong 6s sau
+    public ExecuteInfo(BlockingQueue<String> queue) throws IOException {
 
-    public ExecuteInfo(BlockingQueue<String> queue) {
+//        socket = new Socket(IP_CONTROLLER,PORT);
+//        out = new ObjectOutputStream(socket.getOutputStream());
         this.queue = queue;
         listFlow1 = new ArrayList<Item>();
         listIAT1 = new ArrayList<Double>();
-        listFlow2 = new ArrayList<Item>();
-        listIAT2 = new ArrayList<Double>();
     }
 
     public void run() {
@@ -45,9 +52,15 @@ public class ExecuteInfo implements Runnable{
                 double itemPacket = (Double) item.getFieldValue(Flow.TIME_STAMP.toString());
                 listIAT1.add(itemPacket - oldTimeStamp);
                 oldTimeStamp = itemPacket;
-                if(current - start > 12000){
-                    new Statistics(listFlow1,listIAT1,listFlow2,listIAT2).statisticICMP();
-                    start += 6000;
+                if(current - start > 6000){
+                    Double z = new Statistics(listFlow1,listIAT1).statisticICMP();
+//                    try {
+//                        out.writeDouble(z);
+//                        out.flush();
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+                    start = current;
                 }else {
                     //first là gói tin đầu tiên của luồng ứng với gói tin vừa nhận được
                     Item first = getItem1(item);
@@ -55,22 +68,8 @@ public class ExecuteInfo implements Runnable{
                     if (first == null) {//first = null => gói tin vừa nhận được là gói tin đầu tiên của luồng
                         listFlow1.add(item);
                     } else {
-                        double fisrtPacket = (Double) first.getFieldValue(Flow.TIME_STAMP.toString());
-                        double time = itemPacket - fisrtPacket;
-
-                        //Kiểm tra xem gói tin1 vừa nhận được thuộc 6s đầu hay 6s sau
-                        if (time / 6 < 1) {
-                            int count = (Integer) first.getFieldValue(Flow.COUNT.toString());
-                            first.setAttribute(Flow.COUNT.toString(), count + 1);//Tăng số gói tin của luồng lên 1
-                        } else {// Gói tin vừa nhận được thuộc về 6s sau ta làm tương tự so với 6s đầu
-                            Item f = getItem2(item);
-                            if (f == null) {
-                                listFlow2.add(item);
-                            } else {
-                                int count = (Integer) f.getFieldValue(Flow.COUNT.toString());
-                                f.setAttribute(Flow.COUNT.toString(), count + 1);
-                            }
-                        }
+                        int count = (Integer) first.getFieldValue(Flow.COUNT.toString());
+                        first.setAttribute(Flow.COUNT.toString(), count + 1);
                     }
                 }
             }
@@ -85,14 +84,6 @@ public class ExecuteInfo implements Runnable{
             return true;
 
         return false;
-    }
-    public Item getItem2(Item item){
-        for(Item i : listFlow2){
-            if(flowCompare(i,item)){
-                return i;
-            }
-        }
-        return null;
     }
 
     public Item getItem1(Item item){

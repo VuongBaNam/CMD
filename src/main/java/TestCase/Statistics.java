@@ -1,5 +1,6 @@
 package TestCase;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -8,28 +9,25 @@ public class Statistics{
     private List<Item> listFlow1;//luu cac goi tin dau tien cua cac flow trong 6s đầu
     private List<Double> listIAT1;//luu danh sach cac paket Inter-Arrival Time cua tung flow trong 6s đầu
 
-    private List<Item> listFlow2;//luu cac goi tin dau tien cua cac flow trong 6s sau
-    private List<Double> listIAT2;//luu danh sach cac paket Inter-Arrival Time cua tung flow trong 6s sau
-
-    public Statistics(List<Item> listFlow1, List<Double> listIAT1, List<Item> listFlow2, List<Double> listIAT2) {
+    public Statistics(List<Item> listFlow1, List<Double> listIAT1) {
         this.listFlow1 = listFlow1;
         this.listIAT1 = listIAT1;
-        this.listFlow2 = listFlow2;
-        this.listIAT2 = listIAT2;
     }
-    public void statisticICMP() {
+    public double statisticICMP() {
         if(listFlow1.size() != 0) {
 
             int NUM_ICMP = 0;//số flow có 1 gói tin
             int PKT_IAT_02 = 0;// số packet có inter-arrival time < 0.2ms
 
-            int numberFlow = listFlow1.size();
+            int numberFlow = 0;
 
             //Flow nào có danh sách paket Inter-Arrival Time rỗng (kích thước = 0) thì flow đó có 1 gói tin
             for (Item item : listFlow1) {
-                String pro = (String) item.getFieldValue(Flow.PROTOCOL.toString());
-                if(pro.equals("ICMP")){
-                    NUM_ICMP += 1;
+                numberFlow += (Integer) item.getFieldValue(Flow.COUNT.toString());
+                int pro = Integer.parseInt((String) item.getFieldValue(Flow.PORT_SRC.toString()));
+
+                if (pro == 7) {
+                    NUM_ICMP += (Integer) item.getFieldValue(Flow.COUNT.toString());
                 }
             }
 
@@ -48,21 +46,20 @@ public class Statistics{
             //Xóa thông tin của 6s đầu
             listFlow1.clear();
             listIAT1.clear();
-
-            //Lưu thông tin của 6s sau
-            listFlow1 = listFlow2;
-            listIAT1 = listIAT2;
-
-            //Xóa thông tin của 6s sau
-            listFlow2.clear();
-            listIAT2.clear();
-
             //Module chạy thuật toán và gửi số z cho Contrller
             //Chạy thuật toán fuzzy để tìm ra số z
+
+            System.out.println("================");
+            System.out.println(new Date(System.currentTimeMillis()));
+            System.out.println("RATE_ICMP : "+RATE_ICMP);
+            System.out.println("P_IAT : "+P_IAT);
             double Z = FIS(RATE_ICMP, P_IAT);
-            Date date = new Date(System.currentTimeMillis());
-            System.out.println(date + ": "+Z+"\t" + RATE_ICMP+"\t"+P_IAT);
+//            Date date = new Date(System.currentTimeMillis());
+            //System.out.println(date + ": "+Z+"\t" + RATE_ICMP+"\t"+P_IAT);
+
+            return Z;
         }
+        return 0;
     }
     public void run() {
         if(listFlow1.size() != 0) {
@@ -95,14 +92,6 @@ public class Statistics{
             //Xóa thông tin của 6s đầu
             listFlow1.clear();
             listIAT1.clear();
-
-            //Lưu thông tin của 6s sau
-            listFlow1 = listFlow2;
-            listIAT1 = listIAT2;
-
-            //Xóa thông tin của 6s sau
-            listFlow2.clear();
-            listIAT2.clear();
 
             //Module chạy thuật toán và gửi số z cho Contrller
             //Chạy thuật toán fuzzy để tìm ra số z
