@@ -63,11 +63,6 @@ public class PackageCapture {
     }
 
     private static void printPacket(Packet packet, PcapHandle ph) throws IllegalRawDataException, InterruptedException {
-        StringBuilder sb = new StringBuilder();
-        sb.append("A packet captured at ")
-                .append(ph.getTimestamp())
-                .append(":");
-        //System.out.println(sb);
 
         int packetLength = packet.length();
 
@@ -105,7 +100,7 @@ public class PackageCapture {
             }else if(p == 17){
                 pro = "UDP";
             }
-            String str = timeStamp +"\t"+ipSrc+"\t"+ipDst+"\t"+portSrc+"\t"+portDst+"\t"+pro;
+            String str = timeStamp +"\t"+ipSrc+"\t"+ipDst+"\t"+portSrc+"\t"+portDst+"\t"+pro+"\t"+packetLength;
 
 //            System.out.println(str);
 

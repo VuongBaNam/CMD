@@ -1,61 +1,78 @@
 package TestCase;
 
+import com.google.gson.Gson;
+
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 public class Statistics{
+    private Gson gson;
+    private ObjectOutputStream out ;
     private List<Item> listFlow1;//luu cac goi tin dau tien cua cac flow trong 6s đầu
     private List<Double> listIAT1;//luu danh sach cac paket Inter-Arrival Time cua tung flow trong 6s đầu
+    private Socket socket;
 
-    public Statistics(List<Item> listFlow1, List<Double> listIAT1) {
+    public Statistics(List<Item> listFlow1, List<Double> listIAT1,Socket socket) throws IOException {
+        gson = new Gson();
+        this.socket = socket;
+        out = new ObjectOutputStream(socket.getOutputStream());
         this.listFlow1 = listFlow1;
         this.listIAT1 = listIAT1;
     }
-    public double statisticICMP() {
+    public double statisticICMP() throws IOException {
         if(listFlow1.size() != 0) {
 
-            int NUM_ICMP = 0;//số flow có 1 gói tin
-            int PKT_IAT_02 = 0;// số packet có inter-arrival time < 0.2ms
+            double RATE_ICMP = 0;
+            double P_IAT = 0;
+            long NUMBER_PACKET = 0;
+            double PKT_SIZE_AVG = 0;
 
-            int numberFlow = 0;
-
+            int NUM_ICMP = 0;
+            long total_byte = 0;
             //Flow nào có danh sách paket Inter-Arrival Time rỗng (kích thước = 0) thì flow đó có 1 gói tin
             for (Item item : listFlow1) {
-                numberFlow += (Integer) item.getFieldValue(Flow.COUNT.toString());
+                NUMBER_PACKET += (Integer) item.getFieldValue(Flow.COUNT.toString());
+                total_byte += (Long) item.getFieldValue(Flow.BYTE_COUNT.toString());
                 int pro = Integer.parseInt((String) item.getFieldValue(Flow.PORT_SRC.toString()));
-
                 if (pro == 7) {
                     NUM_ICMP += (Integer) item.getFieldValue(Flow.COUNT.toString());
                 }
             }
-
             //ONE_PKT_FLOW là %số flow có 1 gói tin trên tổng số flow
-            double RATE_ICMP = NUM_ICMP * 1.0 / numberFlow;
+            RATE_ICMP = NUM_ICMP * 1.0 / NUMBER_PACKET;
+            PKT_SIZE_AVG = NUMBER_PACKET *1.0/NUMBER_PACKET;
+
+            int PKT_IAT_02 = 0;// số packet có inter-arrival time < 0.2ms
 
             long size_IAT = listIAT1.size();
             for (double timeStamp : listIAT1) {
-                if (timeStamp < 0.0002) {
+                if (timeStamp < Utils.THRESHOLD_IAT) {
                     PKT_IAT_02 += 1;
                 }
             }
             //PKT_IAT là %số gói tin có paket Inter-Arrival Time < 0.02
-            double P_IAT = (PKT_IAT_02 * 1.0 + 1) / size_IAT;
+            P_IAT = (PKT_IAT_02 * 1.0 + 1) / size_IAT;
+
+            Parameter par = new Parameter(RATE_ICMP,P_IAT,PKT_SIZE_AVG,NUMBER_PACKET);
 
             //Xóa thông tin của 6s đầu
             listFlow1.clear();
             listIAT1.clear();
-            //Module chạy thuật toán và gửi số z cho Contrller
-            //Chạy thuật toán fuzzy để tìm ra số z
-
-            System.out.println("================");
-            System.out.println(new Date(System.currentTimeMillis()));
-            System.out.println("RATE_ICMP : "+RATE_ICMP);
-            System.out.println("P_IAT : "+P_IAT);
+//
+//            System.out.println("================");
+//            System.out.println(new Date(System.currentTimeMillis()));
+//            System.out.println("RATE_ICMP : "+RATE_ICMP);
+//            System.out.println("P_IAT : "+P_IAT);
             double Z = FIS(RATE_ICMP, P_IAT);
-//            Date date = new Date(System.currentTimeMillis());
-            //System.out.println(date + ": "+Z+"\t" + RATE_ICMP+"\t"+P_IAT);
+
+            String json = gson.toJson(par);
+            out.writeChars(json);
+            out.flush();
 
             return Z;
         }

@@ -1,5 +1,7 @@
 package TestCase;
 
+import com.google.gson.Gson;
+
 import java.io.*;
 import java.util.*;
 import java.util.concurrent.BlockingQueue;
@@ -60,8 +62,16 @@ public class CMD {
         return 0;
     }
     public static void main(String[] args) throws InterruptedException {
-        CMD cmd = new CMD();
-        cmd.executeCommand(command);//Yêu cầu hệ thống bắt đầu chạy câu lệnh và thống kê thông tin
+        Item item = new Item();
+
+        item.setAttribute(Parameter.RATE_ICMP.toString(),0.002345);
+        item.setAttribute(Parameter.P_IAT.toString(),0.12345);
+        item.setAttribute(Parameter.PKT_SIZE_AVG.toString(),64.09090);
+        item.setAttribute(Parameter.TOTAL_PKT.toString(),305000);
+
+        Gson gson = new Gson();
+        String str = gson.toJson(item);
+        System.out.println(str);
     }
 
 }

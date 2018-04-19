@@ -4,15 +4,14 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
 
-public class ExecuteInfo implements Runnable{
+import static TestCase.Utils.IP_CONTROLLER;
+import static TestCase.Utils.PORT;
 
-    public static final String IP_CONTROLLER = "192.168.101.15";
-    public static final int PORT = 5000;
+public class ExecuteInfo implements Runnable{
 
     BlockingQueue<String> queue = null;
     protected List<Item> listFlow1;//luu cac goi tin dau tien cua cac flow trong 6s đầu
@@ -22,8 +21,8 @@ public class ExecuteInfo implements Runnable{
 
     public ExecuteInfo(BlockingQueue<String> queue) throws IOException {
 
-//        socket = new Socket(IP_CONTROLLER,PORT);
-//        out = new ObjectOutputStream(socket.getOutputStream());
+        socket = new Socket(IP_CONTROLLER,PORT);
+        out = new ObjectOutputStream(socket.getOutputStream());
         this.queue = queue;
         listFlow1 = new ArrayList<Item>();
         listIAT1 = new ArrayList<Double>();
@@ -50,10 +49,15 @@ public class ExecuteInfo implements Runnable{
             if (item != null) {
 
                 double itemPacket = (Double) item.getFieldValue(Flow.TIME_STAMP.toString());
+                long byteCount = (Long) item.getFieldValue(Flow.BYTE_COUNT.toString());
                 listIAT1.add(itemPacket - oldTimeStamp);
                 oldTimeStamp = itemPacket;
                 if(current - start > 6000){
-                    Double z = new Statistics(listFlow1,listIAT1).statisticICMP();
+                    try {
+                        new Statistics(listFlow1,listIAT1,socket).statisticICMP();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
 //                    try {
 //                        out.writeDouble(z);
 //                        out.flush();
@@ -69,7 +73,9 @@ public class ExecuteInfo implements Runnable{
                         listFlow1.add(item);
                     } else {
                         int count = (Integer) first.getFieldValue(Flow.COUNT.toString());
+                        long byte_count = (Integer) first.getFieldValue(Flow.BYTE_COUNT.toString());
                         first.setAttribute(Flow.COUNT.toString(), count + 1);
+                        first.setAttribute(Flow.COUNT.toString(), byte_count + byteCount);
                     }
                 }
             }
@@ -103,6 +109,7 @@ public class ExecuteInfo implements Runnable{
         item.setAttribute(Flow.PORT_SRC.toString(), a[3]);
         item.setAttribute(Flow.PORT_DST.toString(), a[4]);
         item.setAttribute(Flow.PROTOCOL.toString(),a[5]);
+        item.setAttribute(Flow.BYTE_COUNT.toString(),a[5]);
         item.setAttribute(Flow.COUNT.toString(),1);
         return item;
     }
