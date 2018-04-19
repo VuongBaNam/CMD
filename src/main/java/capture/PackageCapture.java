@@ -26,8 +26,8 @@ public class PackageCapture {
 //            System.out.println("Plesase enter arguments IP....");
 //            return;
 //        }
-        ExecuteInfo executeInfo = new ExecuteInfo(queue);
-        new Thread(executeInfo).start();
+//        ExecuteInfo executeInfo = new ExecuteInfo(queue);
+//        new Thread(executeInfo).start();
         String filter = null;
         if (args.length != 0) {
             filter = args[0];
@@ -90,7 +90,7 @@ public class PackageCapture {
             TcpPort dstPort = TcpPort.ECHO;
 
             if(p != 1) {
-                srcPort = TcpPort.getInstance(ByteArrays.getShort(data, 0 + headerLength));
+                srcPort = TcpPort.getInstance(ByteArrays.getShort(data, headerLength));
                 dstPort = TcpPort.getInstance(ByteArrays.getShort(data, 2 + headerLength));
             }
 
@@ -107,7 +107,7 @@ public class PackageCapture {
             }
             String str = timeStamp +"\t"+ipSrc+"\t"+ipDst+"\t"+portSrc+"\t"+portDst+"\t"+pro;
 
-            //System.out.println(str);
+//            System.out.println(str);
 
             queue.put(str);
 
