@@ -3,6 +3,7 @@ package TestCase;
 import com.google.gson.Gson;
 
 import java.io.*;
+import java.net.Socket;
 import java.util.*;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -12,66 +13,73 @@ import java.util.concurrent.TimeUnit;
  * Created by Nam on 20/04/2017.
  */
 public class CMD {
-    // câu lệnh lấy thông tin packet sử dụng tshark
 
-    public static final String command = "C:\\Program Files\\Wireshark\\tshark.exe -i \"Wireless Network Connection\" -T fields -e frame.time_relative -e ip.src -e ip.dst -e tcp.srcport -e tcp.dstport";
-    //Địa chỉ ip của controller
-    public static final String IP_CONTROLLER = "192.168.163.1";
+    BlockingQueue<String> queue;
+    protected List<Item> listFlow1;//luu cac goi tin dau tien cua cac flow trong 6s đầu
+    protected List<Double> listIAT1;//luu danh sach cac paket Inter-Arrival Time cua tung flow trong 6s đầu
 
-    private int executeCommand(String command) {
-        Process p;
-        BlockingQueue<String> queue = new LinkedBlockingQueue<String>();
-//        ExecuteInfo executeInfo = new ExecuteInfo(queue);
-//        new Thread(executeInfo).start();
+    public CMD(){
+        queue = new LinkedBlockingQueue<String>();
+        listFlow1 = new ArrayList<Item>();
+        listIAT1 = new ArrayList<Double>();
+    }
+
+    private int executeCommand( ) throws IOException {
         try {
-            // Module thực hiện câu lệnh
-            p = Runtime.getRuntime().exec(command);
-//            p.waitFor();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
-            //Module tính toán 2 thông số là % số flow có 1 gói tin và % paket inter-arrival time < 0.02s
+            FileReader fr = new FileReader("F:\\CaiDaICMP.txt");
+            BufferedReader reader = new BufferedReader(fr);
+            ExecuteInfo info = new ExecuteInfo(queue);
+            new Thread(info).start();
             String line = "";
-            long start = System.currentTimeMillis();// Thời điểm bắt đầ
+            double start = Double.parseDouble(reader.readLine().split("\\t")[0]);
 
-            while (true){
-                line = reader.readLine();
-                System.out.println(new Date(System.currentTimeMillis()) +": "+line);
+            int dem = 0;
+            while ((line = reader.readLine())!=null) {
+                queue.put(line);
             }
+            queue.put("q");
 
-//            new Thread(new Runnable() {
-//                @Override
-//                public void run() {
-//                    while (true){
-//                        try {
-//                            queue.put(reader.readLine());
-//                        } catch (InterruptedException e) {
-//                            e.printStackTrace();
-//                        } catch (IOException e) {
-//                            e.printStackTrace();
-//                        }
-////                        try {
-////                            Thread.sleep(1);
-////                        } catch (InterruptedException e) {
-////                            e.printStackTrace();
-////                        }
-//                    }
-//                }
-//            }).start();
         } catch (Exception e) {
             System.out.println(e.getMessage().toString());
         }
         return 0;
     }
     public static void main(String[] args) throws InterruptedException {
-        Item item = new Item();
+        try {
+            new CMD().executeCommand();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public boolean flowCompare(Item i,Item item) {
+        if (i.getFieldValue(Flow.IP_SRC.toString()).equals(item.getFieldValue(Flow.IP_SRC.toString()))
+                && i.getFieldValue(Flow.IP_DST.toString()).equals(item.getFieldValue(Flow.IP_DST.toString()))
+                && i.getFieldValue(Flow.PORT_SRC.toString()).equals(item.getFieldValue(Flow.PORT_SRC.toString()))
+                && i.getFieldValue(Flow.PORT_DST.toString()).equals(item.getFieldValue(Flow.PORT_DST.toString())))
+            return true;
 
-        item.setAttribute(Parameter.RATE_ICMP.toString(),0.002345);
-        item.setAttribute(Parameter.P_IAT.toString(),0.12345);
-        item.setAttribute(Parameter.PKT_SIZE_AVG.toString(),64.09090);
-        item.setAttribute(Parameter.TOTAL_PKT.toString(),305000);
-
-        Gson gson = new Gson();
-        String str = gson.toJson(item);
-        System.out.println(str);
+        return false;
     }
 
+    public Item getItem1(Item item){
+        for(Item i : listFlow1){
+            if(flowCompare(i,item)){
+                return i;
+            }
+        }
+        return null;
+    }
+
+    public Item createItem(String a[]){
+        Item item = new Item();
+        item.setAttribute(Flow.TIME_STAMP.toString(), Double.parseDouble(a[0]));
+        item.setAttribute(Flow.IP_SRC.toString(),a[1]);
+        item.setAttribute(Flow.IP_DST.toString(),a[2]);
+        item.setAttribute(Flow.PORT_SRC.toString(), a[3]);
+        item.setAttribute(Flow.PORT_DST.toString(), a[4]);
+        item.setAttribute(Flow.PROTOCOL.toString(),a[5]);
+        item.setAttribute(Flow.BYTE_COUNT.toString(),Long.parseLong(a[6]));
+        item.setAttribute(Flow.COUNT.toString(),1);
+        return item;
+    }
 }

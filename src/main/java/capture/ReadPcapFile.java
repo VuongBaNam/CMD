@@ -83,7 +83,7 @@ public class ReadPcapFile {
                 } else if (p == 17) {
                     pro = "UDP";
                 }
-                String str = timeStamp + "\t" + ipSrc + "\t" + ipDst + "\t" + portSrc + "\t" + portDst + "\t" + pro;
+                String str = timeStamp + "\t" + ipSrc + "\t" + ipDst + "\t" + portSrc + "\t" + portDst + "\t" + pro+"\t"+(packet.length()+14);
                 bw.write(str +"\n");
             }
         }

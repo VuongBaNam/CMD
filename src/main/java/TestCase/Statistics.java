@@ -20,11 +20,11 @@ public class Statistics{
     public Statistics(List<Item> listFlow1, List<Double> listIAT1,Socket socket) throws IOException {
         gson = new Gson();
         this.socket = socket;
-        out = new ObjectOutputStream(socket.getOutputStream());
+        //out = new ObjectOutputStream(socket.getOutputStream());
         this.listFlow1 = listFlow1;
         this.listIAT1 = listIAT1;
     }
-    public double statisticICMP() throws IOException {
+    public Parameter statisticICMP() throws IOException {
         if(listFlow1.size() != 0) {
 
             double RATE_ICMP = 0;
@@ -45,7 +45,7 @@ public class Statistics{
             }
             //ONE_PKT_FLOW là %số flow có 1 gói tin trên tổng số flow
             RATE_ICMP = NUM_ICMP * 1.0 / NUMBER_PACKET;
-            PKT_SIZE_AVG = NUMBER_PACKET *1.0/NUMBER_PACKET;
+            PKT_SIZE_AVG = total_byte *1.0/NUMBER_PACKET;
 
             int PKT_IAT_02 = 0;// số packet có inter-arrival time < 0.2ms
 
@@ -70,13 +70,15 @@ public class Statistics{
 //            System.out.println("P_IAT : "+P_IAT);
             double Z = FIS(RATE_ICMP, P_IAT);
 
-            String json = gson.toJson(par);
-            out.writeChars(json);
-            out.flush();
+            if(socket != null) {
+                String json = gson.toJson(par);
+                out.writeChars(json);
+                out.flush();
+            }
 
-            return Z;
+            return par;
         }
-        return 0;
+        return null;
     }
     public void run() {
         if(listFlow1.size() != 0) {
