@@ -1,5 +1,7 @@
 package TestCase;
 
+import com.google.gson.Gson;
+
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -22,12 +24,14 @@ public class ExecuteInfo implements Runnable{
     protected List<Item> listFlow1;//luu cac goi tin dau tien cua cac flow trong 6s đầu
     protected List<Double> listIAT1;//luu danh sach cac paket Inter-Arrival Time cua tung flow trong 6s đầu
     private Socket socket;
+    private Gson gson;
     private ObjectOutputStream out ;
 
     public ExecuteInfo(BlockingQueue<String> queue) throws IOException {
 
 //        socket = new Socket(IP_CONTROLLER,PORT);
 //        out = new ObjectOutputStream(socket.getOutputStream());
+        gson = new Gson();
         this.queue = queue;
         listFlow1 = new ArrayList<Item>();
         listIAT1 = new ArrayList<Double>();
@@ -52,22 +56,6 @@ public class ExecuteInfo implements Runnable{
             }
             //System.out.println(new Date(System.currentTimeMillis())+": "+line);
             if (line == null) continue;
-            if (line .equals("q")) {
-                try {
-                    System.out.println(++dem);
-                    Parameter parameter = new Statistics(listFlow1,listIAT1,socket).statisticICMP();
-                    bw.write(parameter.getRATE_ICMP()+",");
-                    bw.write(parameter.getP_IAT()+",");
-                    bw.write(parameter.getPKT_SIZE_AVG()+",");
-                    bw.write(parameter.getTOTAL_PKT()+"\n");
-                    bw.close();
-                    fw.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                return;
-            }
 
             String[] a = line.trim().split("\\t");
 
@@ -78,15 +66,20 @@ public class ExecuteInfo implements Runnable{
                 long byteCount = (Long) item.getFieldValue(Flow.BYTE_COUNT.toString());
                 listIAT1.add(itemPacket - oldTimeStamp);
                 oldTimeStamp = itemPacket;
+
+                long num_dns_s = 0;
+                if(byteCount > 450 && Integer.parseInt((String)item.getFieldValue(Flow.PORT_SRC.toString() )) == 53){
+                    num_dns_s++;
+                }
+
                 if(itemPacket - start > 6){
                     try {
-                        System.out.println(++dem);
                         Parameter parameter = new Statistics(listFlow1,listIAT1,socket).statisticICMP();
-                        bw.write(parameter.getRATE_ICMP()+",");
-                        bw.write(parameter.getP_IAT()+",");
-                        bw.write(parameter.getPKT_SIZE_AVG()+",");
-                        bw.write(parameter.getTOTAL_PKT()+"\n");
-                        listFlow1.add(item);
+                        double rate_dns = num_dns_s*1.0/parameter.getTOTAL_DNSRESPONE();
+                        parameter.setRATE_DNSRESPONE(rate_dns);
+                        String json = gson.toJson(parameter);
+                        out.writeChars(json);
+                        out.flush();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

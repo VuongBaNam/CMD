@@ -31,6 +31,7 @@ public class Statistics{
             double P_IAT = 0;
             long NUMBER_PACKET = 0;
             double PKT_SIZE_AVG = 0;
+            long number_dns_respone = 0;
 
             int NUM_ICMP = 0;
             long total_byte = 0;
@@ -41,6 +42,8 @@ public class Statistics{
                 int pro = Integer.parseInt((String) item.getFieldValue(Flow.PORT_SRC.toString()));
                 if (pro == 7) {
                     NUM_ICMP += (Integer) item.getFieldValue(Flow.COUNT.toString());
+                }else if(pro == 53){
+                    number_dns_respone++;
                 }
             }
             //ONE_PKT_FLOW là %số flow có 1 gói tin trên tổng số flow
@@ -58,7 +61,7 @@ public class Statistics{
             //PKT_IAT là %số gói tin có paket Inter-Arrival Time < 0.02
             P_IAT = (PKT_IAT_02 * 1.0 + 1) / size_IAT;
 
-            Parameter par = new Parameter(RATE_ICMP,P_IAT,PKT_SIZE_AVG,NUMBER_PACKET);
+            Parameter par = new Parameter(RATE_ICMP,P_IAT,PKT_SIZE_AVG,NUMBER_PACKET,0,number_dns_respone);
 
             //Xóa thông tin của 6s đầu
             listFlow1.clear();

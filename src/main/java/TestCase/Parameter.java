@@ -5,12 +5,32 @@ public class Parameter {
     double P_IAT;
     double PKT_SIZE_AVG;
     long TOTAL_PKT;
+    double RATE_DNSRESPONE;
+    long TOTAL_DNSRESPONE;
 
-    public Parameter(double RATE_ICMP, double p_IAT, double PKT_SIZE_AVG, long TOTAL_PKT) {
+    public Parameter(double RATE_ICMP, double p_IAT, double PKT_SIZE_AVG, long TOTAL_PKT, double RATE_DNSRESPONE, long TOTAL_DNSRESPONE) {
         this.RATE_ICMP = RATE_ICMP;
         P_IAT = p_IAT;
         this.PKT_SIZE_AVG = PKT_SIZE_AVG;
         this.TOTAL_PKT = TOTAL_PKT;
+        this.RATE_DNSRESPONE = RATE_DNSRESPONE;
+        this.TOTAL_DNSRESPONE = TOTAL_DNSRESPONE;
+    }
+
+    public double getRATE_DNSRESPONE() {
+        return RATE_DNSRESPONE;
+    }
+
+    public void setRATE_DNSRESPONE(double RATE_DNSRESPONE) {
+        this.RATE_DNSRESPONE = RATE_DNSRESPONE;
+    }
+
+    public long getTOTAL_DNSRESPONE() {
+        return TOTAL_DNSRESPONE;
+    }
+
+    public void setTOTAL_DNSRESPONE(long TOTAL_DNSRESPONE) {
+        this.TOTAL_DNSRESPONE = TOTAL_DNSRESPONE;
     }
 
     public double getRATE_ICMP() {
