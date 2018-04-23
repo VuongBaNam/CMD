@@ -11,16 +11,10 @@ import java.util.List;
 import java.util.Map;
 
 public class Statistics{
-    private Gson gson;
-    private ObjectOutputStream out ;
     private List<Item> listFlow1;//luu cac goi tin dau tien cua cac flow trong 6s đầu
     private List<Double> listIAT1;//luu danh sach cac paket Inter-Arrival Time cua tung flow trong 6s đầu
-    private Socket socket;
 
-    public Statistics(List<Item> listFlow1, List<Double> listIAT1,Socket socket) throws IOException {
-        gson = new Gson();
-        this.socket = socket;
-        //out = new ObjectOutputStream(socket.getOutputStream());
+    public Statistics(List<Item> listFlow1, List<Double> listIAT1 ) throws IOException {
         this.listFlow1 = listFlow1;
         this.listIAT1 = listIAT1;
     }
@@ -66,18 +60,6 @@ public class Statistics{
             //Xóa thông tin của 6s đầu
             listFlow1.clear();
             listIAT1.clear();
-//
-//            System.out.println("================");
-//            System.out.println(new Date(System.currentTimeMillis()));
-//            System.out.println("RATE_ICMP : "+RATE_ICMP);
-//            System.out.println("P_IAT : "+P_IAT);
-            double Z = FIS(RATE_ICMP, P_IAT);
-
-            if(socket != null) {
-                String json = gson.toJson(par);
-                out.writeChars(json);
-                out.flush();
-            }
 
             return par;
         }

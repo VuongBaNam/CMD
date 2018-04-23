@@ -29,8 +29,8 @@ public class ExecuteInfo implements Runnable{
 
     public ExecuteInfo(BlockingQueue<String> queue) throws IOException {
 
-//        socket = new Socket(IP_CONTROLLER,PORT);
-//        out = new ObjectOutputStream(socket.getOutputStream());
+        socket = new Socket(IP_CONTROLLER,PORT);
+        out = new ObjectOutputStream(socket.getOutputStream());
         gson = new Gson();
         this.queue = queue;
         listFlow1 = new ArrayList<Item>();
@@ -74,10 +74,13 @@ public class ExecuteInfo implements Runnable{
 
                 if(itemPacket - start > 6){
                     try {
-                        Parameter parameter = new Statistics(listFlow1,listIAT1,socket).statisticICMP();
-                        double rate_dns = num_dns_s*1.0/parameter.getTOTAL_DNSRESPONE();
+                        Parameter parameter = new Statistics(listFlow1,listIAT1).statisticICMP();
+                        double rate_dns = 0;
+                        if(parameter.getTOTAL_DNSRESPONE() != 0)
+                            rate_dns = num_dns_s*1.0/parameter.getTOTAL_DNSRESPONE();
                         parameter.setRATE_DNSRESPONE(rate_dns);
                         String json = gson.toJson(parameter);
+                        System.out.println(json);
                         out.writeChars(json);
                         out.flush();
                     } catch (IOException e) {
