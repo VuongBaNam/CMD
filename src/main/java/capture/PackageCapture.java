@@ -101,7 +101,6 @@ public class PackageCapture {
                 pro = "UDP";
             }
             String str = timeStamp +"\t"+ipSrc+"\t"+ipDst+"\t"+portSrc+"\t"+portDst+"\t"+pro+"\t"+packetLength;
-
 //            System.out.println(str);
 
             queue.put(str);

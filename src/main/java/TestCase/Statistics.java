@@ -3,12 +3,7 @@ package TestCase;
 import com.google.gson.Gson;
 
 import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 public class Statistics{
     private List<Item> listFlow1;//luu cac goi tin dau tien cua cac flow trong 6s đầu
@@ -65,24 +60,42 @@ public class Statistics{
         }
         return null;
     }
-    public void run() {
+    public Par run() {
         if(listFlow1.size() != 0) {
 
             int ONE_PKT_ON_FLOW = 0;//số flow có 1 gói tin
-            int PKT_IAT_02 = 0;// số packet có inter-arrival time < 0.02s
+            int PKT_IAT_02 = 0;// số packet có inter-arrival time < 0.2ms
 
             int numberFlow = listFlow1.size();
+            int numberICMP = 0;
+            int numberTCP = 0;
 
             //Flow nào có danh sách paket Inter-Arrival Time rỗng (kích thước = 0) thì flow đó có 1 gói tin
             for (Item item : listFlow1) {
                 int packetPerFlow = (Integer) item.getFieldValue(Flow.COUNT.toString());
+                String pro = (String) item.getFieldValue(Flow.PROTOCOL.toString());
                 if(packetPerFlow == 1){
                     ONE_PKT_ON_FLOW += 1;
+                }
+                if(pro.equals("ICMP")){
+                    numberICMP += packetPerFlow;
+                }
+                if(pro.equals("TCP")){
+                    numberTCP += packetPerFlow;
                 }
             }
 
             //ONE_PKT_FLOW là %số flow có 1 gói tin trên tổng số flow
             double PPF = ONE_PKT_ON_FLOW * 1.0 / numberFlow;
+            String maxRatePro = "";
+
+//            System.out.println(numberICMP + " "+numberTCP);
+
+            if(numberICMP > numberTCP){
+                maxRatePro = "ICMP";
+            }else {
+                maxRatePro = "TCP";
+            }
 
             long size_IAT = listIAT1.size();
             for (double timeStamp : listIAT1) {
@@ -93,16 +106,9 @@ public class Statistics{
             //PKT_IAT là %số gói tin có paket Inter-Arrival Time < 0.02
             double P_IAT = (PKT_IAT_02 * 1.0 - 1) / size_IAT;
 
-            //Xóa thông tin của 6s đầu
-            listFlow1.clear();
-            listIAT1.clear();
-
-            //Module chạy thuật toán và gửi số z cho Contrller
-            //Chạy thuật toán fuzzy để tìm ra số z
-            double Z = FIS(PPF, P_IAT);
-            Date date = new Date(System.currentTimeMillis());
-            System.out.println(date + ": " + Z);
+            return new Par(P_IAT,PPF,maxRatePro);
         }
+        return null;
     }
     public static double FIS(double A1, double A2) {
         double z = 0;

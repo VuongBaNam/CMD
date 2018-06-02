@@ -3,8 +3,11 @@ package capture;
 
 import java.io.*;
 import java.net.Inet4Address;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeoutException;
 
+import TestCase.ExecuteInfo;
 import org.pcap4j.core.NotOpenException;
 import org.pcap4j.core.PcapHandle;
 import org.pcap4j.core.PcapHandle.TimestampPrecision;
@@ -20,17 +23,18 @@ import org.pcap4j.util.ByteArrays;
 @SuppressWarnings("javadoc")
 public class ReadPcapFile {
 
-    private static final int COUNT = 5;
+    public static BlockingQueue<String> queue = new LinkedBlockingQueue<String>();
+    private static final String fileName = "BCA";
 
     private static final String PCAP_FILE_KEY
             = ReadPcapFile.class.getName() + ".pcapFile";
     private static final String PCAP_FILE
-            = System.getProperty(PCAP_FILE_KEY, "F:\\series_0.pcap");
+            = System.getProperty(PCAP_FILE_KEY, "D:\\Security\\Data Analytics\\wireshark.01052017.eth1.log");
 
     private ReadPcapFile() {
     }
 
-    public static void main(String[] args) throws PcapNativeException, NotOpenException, IllegalRawDataException, IOException {
+    public static void main(String[] args) throws PcapNativeException, NotOpenException, IllegalRawDataException, IOException, InterruptedException {
         PcapHandle handle;
         try {
             handle = Pcaps.openOffline(PCAP_FILE, TimestampPrecision.NANO);
@@ -40,9 +44,12 @@ public class ReadPcapFile {
 
         Packet packet ;
 
-        FileWriter fw = new FileWriter("F:\\CaiDaICMP.txt");
+        FileWriter fw = new FileWriter("F:\\"+fileName+".txt");
         BufferedWriter bw = new BufferedWriter(fw);
         int dem = 0;
+
+//        ExecuteInfo executeInfo = new ExecuteInfo(queue);
+//        new Thread(executeInfo).start();
 
         while ((packet = handle.getNextPacket()) != null) {
             dem ++;
@@ -51,7 +58,10 @@ public class ReadPcapFile {
                     .append(handle.getTimestamp())
                     .append(":");
 
-            byte[] data = packet.getRawData();
+            EthernetPacket ethernetPacket = EthernetPacket.newPacket(packet.getRawData(), 0, packet.length());
+
+            Packet ipV4packet = ethernetPacket.getPayload();
+            byte[] data = ipV4packet.getRawData();
 
             IpNumber protocol = IpNumber.getInstance(ByteArrays.getByte(data, 9 ));
 
@@ -84,7 +94,8 @@ public class ReadPcapFile {
                     pro = "UDP";
                 }
                 String str = timeStamp + "\t" + ipSrc + "\t" + ipDst + "\t" + portSrc + "\t" + portDst + "\t" + pro+"\t"+(packet.length()+14);
-                bw.write(str +"\n");
+//                queue.put(str);
+                bw.write(str+"\n");
             }
         }
         bw.close();

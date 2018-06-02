@@ -18,14 +18,12 @@ import static TestCase.Utils.PORT;
 
 public class ExecuteInfo implements Runnable{
 
-    FileWriter fw = new FileWriter("F:\\New folder\\data_pcap\\result.txt");
-    BufferedWriter bw = new BufferedWriter(fw);
     BlockingQueue<String> queue = null;
     protected List<Item> listFlow1;//luu cac goi tin dau tien cua cac flow trong 6s đầu
     protected List<Double> listIAT1;//luu danh sach cac paket Inter-Arrival Time cua tung flow trong 6s đầu
     private Socket socket;
-    private Gson gson;
     private ObjectOutputStream out ;
+    private Gson gson;
 
     public ExecuteInfo(BlockingQueue<String> queue) throws IOException {
 
@@ -37,55 +35,40 @@ public class ExecuteInfo implements Runnable{
         listIAT1 = new ArrayList<Double>();
     }
 
-    public void run() {
+    public void st() throws IOException {
         String line = "";
-
-        try {
-            line = queue.poll(12, TimeUnit.SECONDS);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        double start = Double.parseDouble(line.split("\\t")[0]);
+        double start = 0;
         double oldTimeStamp = 0;
-        int dem = 0;
+        double itemPacket = 0;
+        Item item = null;
+        Par par;
         while (true) {
             try {
                 line = queue.poll(12, TimeUnit.SECONDS);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            //System.out.println(new Date(System.currentTimeMillis())+": "+line);
             if (line == null) continue;
 
-            String[] a = line.trim().split("\\t");
-
-            Item item = createItem(a);
+            item = createItem(line);
+            if(start == 0){
+                start = (Double) item.getFieldValue(Flow.TIME_STAMP.toString());
+            }
+            if(oldTimeStamp == 0){
+                oldTimeStamp = (Double) item.getFieldValue(Flow.TIME_STAMP.toString());
+            }
             if (item != null) {
-
-                double itemPacket = (Double) item.getFieldValue(Flow.TIME_STAMP.toString());
-                long byteCount = (Long) item.getFieldValue(Flow.BYTE_COUNT.toString());
+                itemPacket = (Double) item.getFieldValue(Flow.TIME_STAMP.toString());
                 listIAT1.add(itemPacket - oldTimeStamp);
                 oldTimeStamp = itemPacket;
 
-                long num_dns_s = 0;
-                if(byteCount > 450 && Integer.parseInt((String)item.getFieldValue(Flow.PORT_SRC.toString() )) == 53){
-                    num_dns_s++;
-                }
-
-                if(itemPacket - start > 6){
-                    try {
-                        Parameter parameter = new Statistics(listFlow1,listIAT1).statisticICMP();
-                        double rate_dns = 0;
-                        if(parameter.getTOTAL_DNSRESPONE() != 0)
-                            rate_dns = num_dns_s*1.0/parameter.getTOTAL_DNSRESPONE();
-                        parameter.setRATE_DNSRESPONE(rate_dns);
-                        String json = gson.toJson(parameter);
-                        System.out.println(json);
-                        out.writeChars(json);
-                        out.flush();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                if(itemPacket - start > 5){
+                    par = new Statistics(listFlow1,listIAT1).run();
+                    String strJson = gson.toJson(par);
+                    out.writeChars(strJson);
+                    out.flush();
+                    listFlow1.clear();
+                    listIAT1.clear();
                     start = itemPacket;
                 }else {
                     //first là gói tin đầu tiên của luồng ứng với gói tin vừa nhận được
@@ -94,14 +77,83 @@ public class ExecuteInfo implements Runnable{
                     if (first == null) {//first = null => gói tin vừa nhận được là gói tin đầu tiên của luồng
                         listFlow1.add(item);
                     } else {
-                        int count = (Integer) first.getFieldValue(Flow.COUNT.toString());
-                        long byte_count = (Long) first.getFieldValue(Flow.BYTE_COUNT.toString());
-                        first.setAttribute(Flow.COUNT.toString(), count + 1);
-                        first.setAttribute(Flow.BYTE_COUNT.toString(), byte_count + byteCount);
+                        first.setAttribute(Flow.COUNT.toString(), (Integer) first.getFieldValue(Flow.COUNT.toString()) + 1);
                     }
                 }
             }
         }
+    }
+
+    public void run() {
+        try {
+            st();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+//        String line = "";
+//
+//        try {
+//            line = queue.poll(12, TimeUnit.SECONDS);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//        double start = Double.parseDouble(line.split("\\t")[0]);
+//        double oldTimeStamp = 0;
+//        int dem = 0;
+//        while (true) {
+//            try {
+//                line = queue.poll(12, TimeUnit.SECONDS);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//            //System.out.println(new Date(System.currentTimeMillis())+": "+line);
+//            if (line == null) continue;
+//
+//            String[] a = line.trim().split("\\t");
+//
+//            Item item = createItem(a);
+//            if (item != null) {
+//
+//                double itemPacket = (Double) item.getFieldValue(Flow.TIME_STAMP.toString());
+//                long byteCount = (Long) item.getFieldValue(Flow.BYTE_COUNT.toString());
+//                listIAT1.add(itemPacket - oldTimeStamp);
+//                oldTimeStamp = itemPacket;
+//
+//                long num_dns_s = 0;
+//                if(byteCount > 450 && Integer.parseInt((String)item.getFieldValue(Flow.PORT_SRC.toString() )) == 53){
+//                    num_dns_s++;
+//                }
+//
+//                if(itemPacket - start > 6){
+//                    try {
+//                        Parameter parameter = new Statistics(listFlow1,listIAT1).statisticICMP();
+//                        double rate_dns = 0;
+//                        if(parameter.getTOTAL_DNSRESPONE() != 0)
+//                            rate_dns = num_dns_s*1.0/parameter.getTOTAL_DNSRESPONE();
+//                        parameter.setRATE_DNSRESPONE(rate_dns);
+//                        String json = gson.toJson(parameter);
+//                        System.out.println(json);
+////                        out.writeChars(json);
+////                        out.flush();
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//                    start = itemPacket;
+//                }else {
+//                    //first là gói tin đầu tiên của luồng ứng với gói tin vừa nhận được
+//                    Item first = getItem1(item);
+//
+//                    if (first == null) {//first = null => gói tin vừa nhận được là gói tin đầu tiên của luồng
+//                        listFlow1.add(item);
+//                    } else {
+//                        int count = (Integer) first.getFieldValue(Flow.COUNT.toString());
+//                        long byte_count = (Long) first.getFieldValue(Flow.BYTE_COUNT.toString());
+//                        first.setAttribute(Flow.COUNT.toString(), count + 1);
+//                        first.setAttribute(Flow.BYTE_COUNT.toString(), byte_count + byteCount);
+//                    }
+//                }
+//            }
+//        }
     }
 
     public boolean flowCompare(Item i,Item item) {
@@ -123,7 +175,9 @@ public class ExecuteInfo implements Runnable{
         return null;
     }
 
-    public Item createItem(String a[]){
+    public Item createItem(String line){
+
+        String[] a = line.trim().split("\\t");
         Item item = new Item();
         item.setAttribute(Flow.TIME_STAMP.toString(), Double.parseDouble(a[0]));
         item.setAttribute(Flow.IP_SRC.toString(),a[1]);
