@@ -16,41 +16,48 @@ public class Statistics{
     public Parameter statisticICMP() throws IOException {
         if(listFlow1.size() != 0) {
 
+            long number_flow_one_pkt=  0;
             double RATE_ICMP = 0;
             double P_IAT = 0;
             long NUMBER_PACKET = 0;
             double PKT_SIZE_AVG = 0;
             long number_dns_respone = 0;
+            double PPF = 0;
 
             int NUM_ICMP = 0;
             long total_byte = 0;
             //Flow nào có danh sách paket Inter-Arrival Time rỗng (kích thước = 0) thì flow đó có 1 gói tin
             for (Item item : listFlow1) {
-                NUMBER_PACKET += (Integer) item.getFieldValue(Flow.COUNT.toString());
+                long numbrer_pkt_flow = (Integer) item.getFieldValue(Flow.COUNT.toString());
+                if(numbrer_pkt_flow == 1){
+                    number_flow_one_pkt++;
+                }
+                NUMBER_PACKET += numbrer_pkt_flow;
                 total_byte += (Long) item.getFieldValue(Flow.BYTE_COUNT.toString());
                 int pro = Integer.parseInt((String) item.getFieldValue(Flow.PORT_SRC.toString()));
                 if (pro == 7) {
                     NUM_ICMP += (Integer) item.getFieldValue(Flow.COUNT.toString());
                 }else if(pro == 53){
-                    number_dns_respone++;
+                    number_dns_respone += numbrer_pkt_flow;
                 }
             }
             //ONE_PKT_FLOW là %số flow có 1 gói tin trên tổng số flow
             RATE_ICMP = NUM_ICMP * 1.0 / NUMBER_PACKET;
             PKT_SIZE_AVG = total_byte *1.0/NUMBER_PACKET;
+            PPF = number_flow_one_pkt*1.0/listFlow1.size();
 
             int PKT_IAT_02 = 0;// số packet có inter-arrival time < 0.2ms
 
             long size_IAT = listIAT1.size();
             for (double timeStamp : listIAT1) {
                 if (timeStamp < Utils.THRESHOLD_IAT) {
-                    PKT_IAT_02 += 1;
+                    PKT_IAT_02 ++;
                 }
             }
             //PKT_IAT là %số gói tin có paket Inter-Arrival Time < 0.02
             P_IAT = (PKT_IAT_02 * 1.0 + 1) / size_IAT;
 
-            Parameter par = new Parameter(RATE_ICMP,P_IAT,PKT_SIZE_AVG,NUMBER_PACKET,0,number_dns_respone);
+            Parameter par = new Parameter(RATE_ICMP,PPF,P_IAT,PKT_SIZE_AVG,NUMBER_PACKET,0,number_dns_respone);
 
             //Xóa thông tin của 6s đầu
             listFlow1.clear();

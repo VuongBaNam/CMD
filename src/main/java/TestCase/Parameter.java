@@ -2,19 +2,29 @@ package TestCase;
 
 public class Parameter {
     double RATE_ICMP;
+    double PPF;
     double P_IAT;
     double PKT_SIZE_AVG;
     long TOTAL_PKT;
     double RATE_DNSRESPONE;
     long TOTAL_DNSRESPONE;
 
-    public Parameter(double RATE_ICMP, double p_IAT, double PKT_SIZE_AVG, long TOTAL_PKT, double RATE_DNSRESPONE, long TOTAL_DNSRESPONE) {
+    public Parameter(double RATE_ICMP,double PPF, double p_IAT, double PKT_SIZE_AVG, long TOTAL_PKT, double RATE_DNSRESPONE, long TOTAL_DNSRESPONE) {
         this.RATE_ICMP = RATE_ICMP;
         P_IAT = p_IAT;
         this.PKT_SIZE_AVG = PKT_SIZE_AVG;
         this.TOTAL_PKT = TOTAL_PKT;
         this.RATE_DNSRESPONE = RATE_DNSRESPONE;
         this.TOTAL_DNSRESPONE = TOTAL_DNSRESPONE;
+        this.PPF = PPF;
+    }
+
+    public double getPPF() {
+        return PPF;
+    }
+
+    public void setPPF(double PPF) {
+        this.PPF = PPF;
     }
 
     public double getRATE_DNSRESPONE() {

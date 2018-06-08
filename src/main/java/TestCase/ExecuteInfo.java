@@ -41,7 +41,7 @@ public class ExecuteInfo implements Runnable{
         double oldTimeStamp = 0;
         double itemPacket = 0;
         Item item = null;
-        Par par;
+        long number_dns_450 = 0;
         while (true) {
             try {
                 line = queue.poll(12, TimeUnit.SECONDS);
@@ -58,12 +58,19 @@ public class ExecuteInfo implements Runnable{
                 oldTimeStamp = (Double) item.getFieldValue(Flow.TIME_STAMP.toString());
             }
             if (item != null) {
+                long byteCount = (Long) item.getFieldValue(Flow.BYTE_COUNT.toString());
+                if(byteCount > 450){
+                    number_dns_450++;
+                }
+
                 itemPacket = (Double) item.getFieldValue(Flow.TIME_STAMP.toString());
                 listIAT1.add(itemPacket - oldTimeStamp);
                 oldTimeStamp = itemPacket;
 
-                if(itemPacket - start > 5){
-                    par = new Statistics(listFlow1,listIAT1).run();
+                if(itemPacket - start > 1){
+                    Parameter par = new Statistics(listFlow1,listIAT1).statisticICMP();
+                    double rate_dns_450 = number_dns_450*1.0/par.getTOTAL_DNSRESPONE();
+                    par.setRATE_DNSRESPONE(rate_dns_450);
                     String strJson = gson.toJson(par);
                     out.writeChars(strJson);
                     out.flush();
