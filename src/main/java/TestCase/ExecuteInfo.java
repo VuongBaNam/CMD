@@ -69,8 +69,11 @@ public class ExecuteInfo implements Runnable{
 
                 if(itemPacket - start > 1){
                     Parameter par = new Statistics(listFlow1,listIAT1).statisticICMP();
-                    double rate_dns_450 = number_dns_450*1.0/par.getTOTAL_DNSRESPONE();
-                    par.setRATE_DNSRESPONE(rate_dns_450);
+                    if(par.getTOTAL_DNSRESPONE() != 0){
+                        double rate_dns_450 = number_dns_450*1.0/par.getTOTAL_DNSRESPONE();
+                        par.setRATE_DNSRESPONE(rate_dns_450);
+                    }
+                    else par.setRATE_DNSRESPONE(0);
                     String strJson = gson.toJson(par);
                     out.writeChars(strJson);
                     out.flush();
