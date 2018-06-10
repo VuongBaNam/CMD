@@ -13,7 +13,7 @@ public class Statistics{
         this.listFlow1 = listFlow1;
         this.listIAT1 = listIAT1;
     }
-    public Parameter statisticICMP() throws IOException {
+    public Parameter statistic() throws IOException {
         if(listFlow1.size() != 0) {
 
             long number_flow_one_pkt=  0;
@@ -66,6 +66,12 @@ public class Statistics{
             return par;
         }
         return null;
+    }
+    public ParameterUDP statisticUDP(){
+        if(listFlow1.size() != 0){
+
+        }
+        return new ParameterUDP(0,0,0,0);
     }
     public Par run() {
         if(listFlow1.size() != 0) {

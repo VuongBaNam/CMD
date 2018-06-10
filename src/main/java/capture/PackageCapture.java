@@ -1,6 +1,7 @@
 package capture;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.Inet4Address;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -26,12 +27,10 @@ public class PackageCapture {
 //            System.out.println("Plesase enter arguments IP....");
 //            return;
 //        }
-        ExecuteInfo executeInfo = new ExecuteInfo(queue);
-        new Thread(executeInfo).start();
+//        ExecuteInfo executeInfo = new ExecuteInfo(queue);
+//        new Thread(executeInfo).start();
         String filter = null;
-        if (args.length != 0) {
-            filter = args[0];
-        }
+
 
 //        InetAddress addr = InetAddress.getByName("192.168.10.100");
 //        PcapNetworkInterface nif = Pcaps.getDevByAddress(addr);
@@ -54,6 +53,8 @@ public class PackageCapture {
                     e.printStackTrace();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
                 }
             }
         };
@@ -62,14 +63,15 @@ public class PackageCapture {
             handle.loop(1, listener);
     }
 
-    private static void printPacket(Packet packet, PcapHandle ph) throws IllegalRawDataException, InterruptedException {
+    private static void printPacket(Packet packet, PcapHandle ph) throws IllegalRawDataException, InterruptedException, UnsupportedEncodingException {
 
         int packetLength = packet.length();
+        String link = "";
 
         EthernetPacket ethernetPacket = EthernetPacket.newPacket(packet.getRawData(), 0, packet.length());
 
         Packet ipV4packet = ethernetPacket.getPayload();
-        byte[] data = ipV4packet.getRawData();
+        byte[]data = ipV4packet.getRawData();
 
         IpNumber protocol = IpNumber.getInstance(ByteArrays.getByte(data, 9 ));
 
@@ -87,6 +89,15 @@ public class PackageCapture {
             if(p != 1) {
                 srcPort = TcpPort.getInstance(ByteArrays.getShort(data, headerLength));
                 dstPort = TcpPort.getInstance(ByteArrays.getShort(data, 2 + headerLength));
+                //Lấy thông tin của http
+                byte headerTP = ByteArrays.getByte(data,headerLength+12);
+                int hederTCP = (headerTP & 0xF0) >> 4;
+                byte []d = ByteArrays.getSubArray(data,hederTCP+headerLength);
+
+                String http = new String(d,"UTF-8");
+                if(http.contains("GET")){
+                    link = http.substring(http.indexOf("GET")).split("\n")[0].substring(4);
+                }
             }
 
             double timeStamp = ph.getTimestamp().getTime()*1.0/1000;
@@ -100,7 +111,7 @@ public class PackageCapture {
             }else if(p == 17){
                 pro = "UDP";
             }
-            String str = timeStamp +"\t"+ipSrc+"\t"+ipDst+"\t"+portSrc+"\t"+portDst+"\t"+pro+"\t"+packetLength;
+            String str = timeStamp +"\t"+ipSrc+"\t"+ipDst+"\t"+portSrc+"\t"+portDst+"\t"+pro+"\t"+packetLength+"\t"+link;
 //            System.out.println(str);
 
             queue.put(str);

@@ -11,6 +11,7 @@ public enum Flow {
     PROTOCOL,
     PORT_SRC,
     PORT_DST,
+    LINK,
     COUNT,
     BYTE_COUNT
 }

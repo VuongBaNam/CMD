@@ -21,6 +21,9 @@ public class ExecuteInfo implements Runnable{
     BlockingQueue<String> queue = null;
     protected List<Item> listFlow1;//luu cac goi tin dau tien cua cac flow trong 6s đầu
     protected List<Double> listIAT1;//luu danh sach cac paket Inter-Arrival Time cua tung flow trong 6s đầu
+
+    protected List<Item> listFlow5s;//luu cac goi tin dau tien cua cac flow trong 6s đầu
+    protected List<Double> listIAT5s;//luu danh sach cac paket Inter-Arrival Time cua tung flow trong 6s đầu
     private Socket socket;
     private ObjectOutputStream out ;
     private Gson gson;
@@ -33,11 +36,14 @@ public class ExecuteInfo implements Runnable{
         this.queue = queue;
         listFlow1 = new ArrayList<Item>();
         listIAT1 = new ArrayList<Double>();
+        listFlow5s = new ArrayList<Item>();
+        listIAT5s = new ArrayList<Double>();
     }
 
     public void st() throws IOException {
         String line = "";
         double start = 0;
+        double start5s = 0;
         double oldTimeStamp = 0;
         double itemPacket = 0;
         Item item = null;
@@ -51,11 +57,15 @@ public class ExecuteInfo implements Runnable{
             if (line == null) continue;
 
             item = createItem(line);
+            double t = (Double) item.getFieldValue(Flow.TIME_STAMP.toString());
             if(start == 0){
-                start = (Double) item.getFieldValue(Flow.TIME_STAMP.toString());
+                start = t;
+            }
+            if(start5s == 0){
+                start5s = t;
             }
             if(oldTimeStamp == 0){
-                oldTimeStamp = (Double) item.getFieldValue(Flow.TIME_STAMP.toString());
+                oldTimeStamp = t;
             }
             if (item != null) {
                 long byteCount = (Long) item.getFieldValue(Flow.BYTE_COUNT.toString());
@@ -65,24 +75,43 @@ public class ExecuteInfo implements Runnable{
 
                 itemPacket = (Double) item.getFieldValue(Flow.TIME_STAMP.toString());
                 listIAT1.add(itemPacket - oldTimeStamp);
+                listIAT5s.add(itemPacket - oldTimeStamp);
                 oldTimeStamp = itemPacket;
 
+                if (itemPacket - start5s >= 5){
+                    ParameterUDP parameterUDP = new Statistics(listFlow5s,listIAT5s).statisticUDP();
+                    String strJson = gson.toJson(parameterUDP);
+                    out.writeChars("5S:"+strJson);
+                    out.flush();
+                    listFlow5s.clear();
+                    listIAT5s.clear();
+                    start = itemPacket;
+                }else {
+                    Item first = getItem1(item,listFlow5s);
+
+                    if (first == null) {//first = null => gói tin vừa nhận được là gói tin đầu tiên của luồng
+                        listFlow5s.add(item);
+                    } else {
+                        first.setAttribute(Flow.COUNT.toString(), (Integer) first.getFieldValue(Flow.COUNT.toString()) + 1);
+                    }
+                }
+
                 if(itemPacket - start > 1){
-                    Parameter par = new Statistics(listFlow1,listIAT1).statisticICMP();
+                    Parameter par = new Statistics(listFlow1,listIAT1).statistic();
                     if(par.getTOTAL_DNSRESPONE() != 0){
                         double rate_dns_450 = number_dns_450*1.0/par.getTOTAL_DNSRESPONE();
                         par.setRATE_DNSRESPONE(rate_dns_450);
                     }
                     else par.setRATE_DNSRESPONE(0);
                     String strJson = gson.toJson(par);
-                    out.writeChars(strJson);
+                    out.writeChars("1S:"+strJson);
                     out.flush();
                     listFlow1.clear();
                     listIAT1.clear();
                     start = itemPacket;
                 }else {
                     //first là gói tin đầu tiên của luồng ứng với gói tin vừa nhận được
-                    Item first = getItem1(item);
+                    Item first = getItem1(item,listFlow1);
 
                     if (first == null) {//first = null => gói tin vừa nhận được là gói tin đầu tiên của luồng
                         listFlow1.add(item);
@@ -176,8 +205,8 @@ public class ExecuteInfo implements Runnable{
         return false;
     }
 
-    public Item getItem1(Item item){
-        for(Item i : listFlow1){
+    public Item getItem1(Item item,List<Item> listFlow){
+        for(Item i : listFlow){
             if(flowCompare(i,item)){
                 return i;
             }
@@ -187,8 +216,12 @@ public class ExecuteInfo implements Runnable{
 
     public Item createItem(String line){
 
-        String[] a = line.trim().split("\\t");
         Item item = new Item();
+        String[] a = line.trim().split("\\t");
+        if(a.length == 8){
+            item.setAttribute(Flow.LINK.toString(),a[7]);
+        }
+
         item.setAttribute(Flow.TIME_STAMP.toString(), Double.parseDouble(a[0]));
         item.setAttribute(Flow.IP_SRC.toString(),a[1]);
         item.setAttribute(Flow.IP_DST.toString(),a[2]);
