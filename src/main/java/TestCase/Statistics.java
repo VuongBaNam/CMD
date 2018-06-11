@@ -1,9 +1,7 @@
 package TestCase;
 
-import com.google.gson.Gson;
-
 import java.io.IOException;
-import java.util.List;
+import java.util.*;
 
 public class Statistics{
     private List<Item> listFlow1;//luu cac goi tin dau tien cua cac flow trong 6s đầu
@@ -56,8 +54,9 @@ public class Statistics{
             }
             //PKT_IAT là %số gói tin có paket Inter-Arrival Time < 0.02
             P_IAT = (PKT_IAT_02 * 1.0 + 1) / size_IAT;
+            List<String> list = statisticHttp();
 
-            Parameter par = new Parameter(RATE_ICMP,PPF,P_IAT,PKT_SIZE_AVG,NUMBER_PACKET,0,number_dns_respone);
+            Parameter par = new Parameter(RATE_ICMP,PPF,P_IAT,PKT_SIZE_AVG,NUMBER_PACKET,0,number_dns_respone,list);
 
             //Xóa thông tin của 6s đầu
             listFlow1.clear();
@@ -67,11 +66,29 @@ public class Statistics{
         }
         return null;
     }
-    public ParameterUDP statisticUDP(){
+    public List<String> statisticHttp(){
+        Map<IPLink,Integer> map = new HashMap<>();
         if(listFlow1.size() != 0){
-
+            for(Item item : listFlow1){
+                String IPsrc = (String)item.getFieldValue(Flow.IP_SRC.toString());
+                String link = (String)item.getFieldValue(Flow.LINK.toString());
+                IPLink ipLink = new IPLink(IPsrc,link);
+                if (map.containsKey(ipLink)){
+                    int count = map.get(ipLink);
+                    map.put(ipLink,count+1);
+                }else {
+                    map.put(ipLink,1);
+                }
+            }
+            List<String> list = new ArrayList<>();
+            for (Map.Entry<IPLink,Integer> entry : map.entrySet()){
+                if(entry.getValue() >= 20){
+                    list.add(entry.getKey().getIP());
+                }
+            }
+            return list;
         }
-        return new ParameterUDP(0,0,0,0);
+        return new ArrayList<>();
     }
     public Par run() {
         if(listFlow1.size() != 0) {

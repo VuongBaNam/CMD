@@ -27,8 +27,8 @@ public class PackageCapture {
 //            System.out.println("Plesase enter arguments IP....");
 //            return;
 //        }
-//        ExecuteInfo executeInfo = new ExecuteInfo(queue);
-//        new Thread(executeInfo).start();
+        ExecuteInfo executeInfo = new ExecuteInfo(queue);
+        new Thread(executeInfo).start();
         String filter = null;
 
 
