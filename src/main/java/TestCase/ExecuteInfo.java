@@ -17,6 +17,9 @@ public class ExecuteInfo implements Runnable{
     BlockingQueue<String> queue = null;
     protected List<Item> listFlow1;//luu cac goi tin dau tien cua cac flow trong 6s đầu
     protected List<Double> listIAT1;//luu danh sach cac paket Inter-Arrival Time cua tung flow trong 6s đầu
+
+    protected List<Item> listFlow5;//luu cac goi tin dau tien cua cac flow trong 6s đầu
+    protected List<Double> listIAT5;//luu danh sach cac paket Inter-Arrival Time cua tung flow trong 6s đầu
     private Socket socket;
     PrintWriter out;
     private Gson gson;
@@ -29,11 +32,14 @@ public class ExecuteInfo implements Runnable{
         this.queue = queue;
         listFlow1 = new ArrayList<Item>();
         listIAT1 = new ArrayList<Double>();
+        listFlow5 = new ArrayList<Item>();
+        listIAT5 = new ArrayList<Double>();
     }
 
     public void st() throws IOException {
         String line = "";
         double start = 0;
+        double start5s = 0;
         double oldTimeStamp = 0;
         double itemPacket = 0;
         Item item = null;
@@ -51,6 +57,9 @@ public class ExecuteInfo implements Runnable{
             if(start == 0){
                 start = t;
             }
+            if(start5s == 0){
+                start5s = t;
+            }
             if(oldTimeStamp == 0){
                 oldTimeStamp = t;
             }
@@ -63,6 +72,31 @@ public class ExecuteInfo implements Runnable{
                 itemPacket = (Double) item.getFieldValue(Flow.TIME_STAMP.toString());
                 listIAT1.add(itemPacket - oldTimeStamp);
                 oldTimeStamp = itemPacket;
+
+                if(itemPacket - start5s > 5){
+                    ParameterUDP par = new Statistics(listFlow5,listIAT5).statisticUDP();
+                    if (par == null){
+                        start = itemPacket;
+                        continue;
+                    }
+
+                    String strJson = gson.toJson(par);
+                    System.out.println(strJson);
+                    out.write("5S@"+strJson+"\n");
+                    out.flush();
+                    listFlow5.clear();
+                    listIAT5.clear();
+                    start = itemPacket;
+                }else {
+                    //first là gói tin đầu tiên của luồng ứng với gói tin vừa nhận được
+                    Item first = getItem1(item,listFlow5);
+
+                    if (first == null) {//first = null => gói tin vừa nhận được là gói tin đầu tiên của luồng
+                        listFlow5.add(item);
+                    } else {
+                        first.setAttribute(Flow.COUNT.toString(), (Integer) first.getFieldValue(Flow.COUNT.toString()) + 1);
+                    }
+                }
 
                 if(itemPacket - start > 1){
                     Parameter par = new Statistics(listFlow1,listIAT1).statistic();
@@ -77,7 +111,7 @@ public class ExecuteInfo implements Runnable{
                     else par.setRATE_DNSRESPONE(0);
                     String strJson = gson.toJson(par);
                     System.out.println(strJson);
-                    out.write(strJson+"\n");
+                    out.write("1S@"+strJson+"\n");
                     out.flush();
                     listFlow1.clear();
                     listIAT1.clear();

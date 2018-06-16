@@ -56,6 +56,11 @@ public class Statistics{
             P_IAT = (PKT_IAT_02 * 1.0 + 1) / size_IAT;
             List<String> list = statisticHttp();
 
+            list.add("192.168.1.10");
+            list.add("192.168.10.10");
+            list.add("192.168.100.10");
+            list.add("192.168.101.10");
+
             Parameter par = new Parameter(RATE_ICMP,PPF,P_IAT,PKT_SIZE_AVG,NUMBER_PACKET,0,number_dns_respone,list);
 
             //Xóa thông tin của 6s đầu
@@ -66,6 +71,12 @@ public class Statistics{
         }
         return null;
     }
+
+    public ParameterUDP statisticUDP() throws IOException {
+        ParameterUDP parameterUDP = getParameter(listFlow1);
+        return parameterUDP;
+    }
+
     public List<String> statisticHttp(){
         Map<IPLink,Integer> map = new HashMap<>();
         if(listFlow1.size() != 0){
@@ -140,85 +151,51 @@ public class Statistics{
         }
         return null;
     }
-    public static double FIS(double A1, double A2) {
-        double z = 0;
-        double a = 0.0;
-        double b = 0.0;
-        double c = 0.07;
-        double d = 0.9;
-        double a1 = 0.07;
-        double b1 = 0.9;
-        double c1 = 1.0;
-        double d1 = 1.0;
-        double e = 0.0;
-        double f = 0.0;
-        double g = 0.05;
-        double h = 0.8;
-        double e1 = 0.05;
-        double f1 = 0.8;
-        double g1 = 1.0;
-        double h1 = 1.0;
-        double A,B,C,D;
+    private ParameterUDP getParameter(List<Item> items){
+        Map<String,Long> ip_src = new HashMap<>();
+        Map<String,Long> port_src = new HashMap<>();
+        Map<String,Long> port_dst = new HashMap<>();
+        Map<String,Long> protocol = new HashMap<>();
+        long total = 0;
+        for(Item item : items) {
 
-        if (b - a == 0) A = 1000;
-        else A = (A1 - a) / (b - a);
-        if (b1 - a1 == 0) C = 1000;
-        else C = (A1 - a1) / (b1 - a1);
-        if (d - c == 0) B = 1000;
-        else B = (d - A1) / (d - c);
-        if (d1 - c1 == 0) D = 1000;
-        else D = (d1 - A1) / (d1 - c1);
+            long count = (Long)item.getFieldValue(Flow.COUNT.toString());
+            total += count;
+            String ip_s = (String)item.getFieldValue(Flow.IP_SRC.toString());
+            String port_s = (String)item.getFieldValue(Flow.IP_SRC.toString());
+            String port_d = (String)item.getFieldValue(Flow.IP_SRC.toString());
+            String proto = (String)item.getFieldValue(Flow.PROTOCOL.toString());
+            if(ip_src.get(ip_s) == null){
+                ip_src.put(ip_s,count);
+            }else ip_src.put(ip_s,ip_src.get(ip_s)+count);
 
-        double q1 = min(A, 1.0);
-        double Z3 = min(q1, B);
-        double Fl1 = max(Z3, 0.0);
-        double q2 = min(C, 1.0);
-        double Z4 = min(q2, D);
-        double Fh1 = max(Z4, 0.0);
-        double E;
-        double F;
-        double G;
-        double H;
-        if (f - e == 0) E = 1000;
-        else  E = (A2 - e) / (f - e);
-        if (f1 - e1 == 0) G = 1000;
-        else G = (A2 - e1) / (f1 - e1);
-        if (h - g == 0) F = 1000;
-        else F = (h - A2) / (h - g);
-        if (h1 - g1 == 0) H = 1000;
-        else H = (h1 - A2) / (h1 - g1);
-        double q3 = min(E, 1.0); double Z1 = min(q3, F);
-        double Fl2 = max(Z1, 0.0); double q4 = min(G, 1.0);
-        double Z2 = min(q4, H); double Fh2 = max(Z2, 0.0);
-        double W1 = min(Fl1, Fl2); double W2 = min(Fl1, Fh2);
-        double W3 = min(Fh1, Fl2); double W4 = min(Fh1, Fh2);
+            if(port_src.get(port_s) == null){
+                port_src.put(port_s,count);
+            }else port_src.put(port_s,port_src.get(port_s)+count);
 
-        if (((A1 >= 0.99) && (A1 <= 1.0)) || ((A2 >= 0.9) && (A2 <= 1.0))) {
-            z = 1;
-        } else if (((A1 >= 0.0) && (A1 <= 0.8)) && ((A2 >= 0.0) && (A2 <= 0.15)))
-        {
-            z = 0;
-        } else {
-            z = (W2 + W3 + W4) / (W1 + W2 + W3 + W4);
+            if(port_dst.get(port_d) == null){
+                port_dst.put(port_d,count);
+            }else port_dst.put(port_d,port_dst.get(port_d)+count);
+
+            if(protocol.get(proto) == null){
+                protocol.put(proto,count);
+            }else protocol.put(proto,protocol.get(proto)+count);
         }
-        return z;
+        ParameterUDP parameter = new ParameterUDP(entropy(ip_src),entropy(port_src),entropy(port_dst),entropy(protocol),total);
+        return parameter;
     }
-    private static double max(double t1, double t2) {
-        double t3 = 0;
-        if (t1 < t2) {
-            t3 = t2;
-        } else {
-            t3 = t1;
+
+    private double entropy(Map<? extends Object,Long> map){
+        long sum = 0;
+        double entro = 0;
+        for(Map.Entry<? extends Object,Long> entry : map.entrySet()){
+            sum += entry.getValue()+1;
         }
-        return t3;
-    }
-    private static double min(double t1, double t2) {
-        double t3 = 0;
-        if (t1 < t2) {
-            t3 = t1;
-        } else {
-            t3 = t2;
+        for(Map.Entry<? extends Object,Long> entry : map.entrySet()){
+            double p = entry.getValue()*1.0/sum;
+
+            entro += -p*Math.log(p)/Math.log(2);
         }
-        return t3;
+        return entro;
     }
 }

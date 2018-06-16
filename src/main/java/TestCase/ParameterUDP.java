@@ -1,47 +1,57 @@
 package TestCase;
 
 public class ParameterUDP {
-    double entropy_ipsrc;
-    double entropy_portsec;
-    double entropy_portdst;
-    double entropy_protocol;
+    double ENTROPY_IP_SRC;
+    double ENTROPY_PORT_SRC;
+    double ENTROPY_PORT_DST;
+    double ENTROPY_PROTOCOL;
+    long total_pkt;
 
-    public ParameterUDP(double entropy_ipsrc, double entropy_portsec, double entropy_portdst, double entropy_protocol) {
-        this.entropy_ipsrc = entropy_ipsrc;
-        this.entropy_portsec = entropy_portsec;
-        this.entropy_portdst = entropy_portdst;
-        this.entropy_protocol = entropy_protocol;
+    public ParameterUDP(double ENTROPY_IP_SRC, double ENTROPY_PORT_SRC, double ENTROPY_PORT_DST, double ENTROPY_PROTOCOL,long total_pkt) {
+        this.ENTROPY_IP_SRC = ENTROPY_IP_SRC;
+        this.ENTROPY_PORT_SRC = ENTROPY_PORT_SRC;
+        this.ENTROPY_PORT_DST = ENTROPY_PORT_DST;
+        this.ENTROPY_PROTOCOL = ENTROPY_PROTOCOL;
+        this.total_pkt = total_pkt;
     }
 
-    public double getEntropy_ipsrc() {
-        return entropy_ipsrc;
+    public long getTotal_pkt() {
+        return total_pkt;
     }
 
-    public void setEntropy_ipsrc(double entropy_ipsrc) {
-        this.entropy_ipsrc = entropy_ipsrc;
+    public void setTotal_pkt(long total_pkt) {
+        this.total_pkt = total_pkt;
     }
 
-    public double getEntropy_portsec() {
-        return entropy_portsec;
+    public double getENTROPY_IP_SRC() {
+        return ENTROPY_IP_SRC;
     }
 
-    public void setEntropy_portsec(double entropy_portsec) {
-        this.entropy_portsec = entropy_portsec;
+    public void setENTROPY_IP_SRC(double ENTROPY_IP_SRC) {
+        this.ENTROPY_IP_SRC = ENTROPY_IP_SRC;
     }
 
-    public double getEntropy_portdst() {
-        return entropy_portdst;
+    public double getENTROPY_PORT_SRC() {
+        return ENTROPY_PORT_SRC;
     }
 
-    public void setEntropy_portdst(double entropy_portdst) {
-        this.entropy_portdst = entropy_portdst;
+    public void setENTROPY_PORT_SRC(double ENTROPY_PORT_SRC) {
+        this.ENTROPY_PORT_SRC = ENTROPY_PORT_SRC;
     }
 
-    public double getEntropy_protocol() {
-        return entropy_protocol;
+    public double getENTROPY_PORT_DST() {
+        return ENTROPY_PORT_DST;
     }
 
-    public void setEntropy_protocol(double entropy_protocol) {
-        this.entropy_protocol = entropy_protocol;
+    public void setENTROPY_PORT_DST(double ENTROPY_PORT_DST) {
+        this.ENTROPY_PORT_DST = ENTROPY_PORT_DST;
+    }
+
+    public double getENTROPY_PROTOCOL() {
+        return ENTROPY_PROTOCOL;
+    }
+
+    public void setENTROPY_PROTOCOL(double ENTROPY_PROTOCOL) {
+        this.ENTROPY_PROTOCOL = ENTROPY_PROTOCOL;
     }
 }
