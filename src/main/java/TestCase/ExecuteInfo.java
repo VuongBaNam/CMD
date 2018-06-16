@@ -86,7 +86,7 @@ public class ExecuteInfo implements Runnable{
                     out.flush();
                     listFlow5.clear();
                     listIAT5.clear();
-                    start = itemPacket;
+                    start5s = itemPacket;
                 }else {
                     //first là gói tin đầu tiên của luồng ứng với gói tin vừa nhận được
                     Item first = getItem1(item,listFlow5);
