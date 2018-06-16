@@ -56,11 +56,6 @@ public class Statistics{
             P_IAT = (PKT_IAT_02 * 1.0 + 1) / size_IAT;
             List<String> list = statisticHttp();
 
-            list.add("192.168.1.10");
-            list.add("192.168.10.10");
-            list.add("192.168.100.10");
-            list.add("192.168.101.10");
-
             Parameter par = new Parameter(RATE_ICMP,PPF,P_IAT,PKT_SIZE_AVG,NUMBER_PACKET,0,number_dns_respone,list);
 
             //Xóa thông tin của 6s đầu
@@ -162,8 +157,8 @@ public class Statistics{
             long count = (Long)item.getFieldValue(Flow.COUNT.toString());
             total += count;
             String ip_s = (String)item.getFieldValue(Flow.IP_SRC.toString());
-            String port_s = (String)item.getFieldValue(Flow.IP_SRC.toString());
-            String port_d = (String)item.getFieldValue(Flow.IP_SRC.toString());
+            String port_s = (String)item.getFieldValue(Flow.PORT_SRC.toString());
+            String port_d = (String)item.getFieldValue(Flow.PORT_DST.toString());
             String proto = (String)item.getFieldValue(Flow.PROTOCOL.toString());
             if(ip_src.get(ip_s) == null){
                 ip_src.put(ip_s,count);
@@ -189,7 +184,7 @@ public class Statistics{
         long sum = 0;
         double entro = 0;
         for(Map.Entry<? extends Object,Long> entry : map.entrySet()){
-            sum += entry.getValue()+1;
+            sum += entry.getValue();
         }
         for(Map.Entry<? extends Object,Long> entry : map.entrySet()){
             double p = entry.getValue()*1.0/sum;
