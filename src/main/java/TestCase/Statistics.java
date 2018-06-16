@@ -154,7 +154,7 @@ public class Statistics{
         long total = 0;
         for(Item item : items) {
 
-            long count = (Long)item.getFieldValue(Flow.COUNT.toString());
+            long count = (Integer)item.getFieldValue(Flow.COUNT.toString());
             total += count;
             String ip_s = (String)item.getFieldValue(Flow.IP_SRC.toString());
             String port_s = (String)item.getFieldValue(Flow.PORT_SRC.toString());
