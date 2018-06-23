@@ -88,7 +88,7 @@ public class Statistics{
             }
             List<String> list = new ArrayList<>();
             for (Map.Entry<IPLink,Integer> entry : map.entrySet()){
-                if(entry.getValue() >= 20){
+                if(entry.getValue() >= Utils.THRESHOLD_HTTP){
                     list.add(entry.getKey().getIP());
                 }
             }
