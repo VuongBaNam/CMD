@@ -84,6 +84,7 @@ public class Statistics{
                     map.put(ipLink,count+1);
                 }else {
                     map.put(ipLink,1);
+
                 }
             }
             List<String> list = new ArrayList<>();
