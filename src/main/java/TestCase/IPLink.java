@@ -26,18 +26,4 @@ public class IPLink extends Object{
     public void setLink(String link) {
         this.link = link;
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == this) return true;
-        if (!(o instanceof IPLink)) return false;
-        IPLink ipLink = (IPLink)o;
-        return Objects.equals(IP,ipLink.getIP()) && Objects.equals(link,ipLink.getLink());
-
-    }
-
-    @Override
-    public int hashCode(){
-        return Objects.hash(IP,link);
-    }
 }
