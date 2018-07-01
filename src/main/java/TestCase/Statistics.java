@@ -54,7 +54,7 @@ public class Statistics{
             }
             //PKT_IAT là %số gói tin có paket Inter-Arrival Time < 0.02
             P_IAT = (PKT_IAT_02 * 1.0 + 1) / size_IAT;
-            List<String> list = statisticHttp();
+            Set<String> list = statisticHttp();
 
             Parameter par = new Parameter(RATE_ICMP,PPF,P_IAT,PKT_SIZE_AVG,NUMBER_PACKET,0,number_dns_respone,list);
 
@@ -72,7 +72,7 @@ public class Statistics{
         return parameterUDP;
     }
 
-    public List<String> statisticHttp(){
+    public Set<String> statisticHttp(){
         Map<IPLink,Integer> map = new HashMap<>();
         if(listFlow1.size() != 0){
             for(Item item : listFlow1){
@@ -87,7 +87,7 @@ public class Statistics{
 
                 }
             }
-            List<String> list = new ArrayList<>();
+            Set<String> list = new HashSet<>();
             for (Map.Entry<IPLink,Integer> entry : map.entrySet()){
                 if(entry.getValue() >= Utils.THRESHOLD_HTTP){
                     list.add(entry.getKey().getIP());
@@ -95,7 +95,7 @@ public class Statistics{
             }
             return list;
         }
-        return new ArrayList<>();
+        return new HashSet<>();
     }
     public Par run() {
         if(listFlow1.size() != 0) {

@@ -1,6 +1,6 @@
 package TestCase;
 
-import java.util.List;
+import java.util.Set;
 
 public class Parameter {
     double RATE_ICMP;
@@ -10,9 +10,9 @@ public class Parameter {
     long TOTAL_PKT;
     double RATE_DNSRESPONE;
     long TOTAL_DNSRESPONE;
-    List<String> list;
+    Set<String> list;
 
-    public Parameter(double RATE_ICMP,double PPF, double p_IAT, double PKT_SIZE_AVG, long TOTAL_PKT, double RATE_DNSRESPONE, long TOTAL_DNSRESPONE,List<String> list) {
+    public Parameter(double RATE_ICMP,double PPF, double p_IAT, double PKT_SIZE_AVG, long TOTAL_PKT, double RATE_DNSRESPONE, long TOTAL_DNSRESPONE,Set<String> list) {
         this.RATE_ICMP = RATE_ICMP;
         P_IAT = p_IAT;
         this.PKT_SIZE_AVG = PKT_SIZE_AVG;
@@ -23,11 +23,11 @@ public class Parameter {
         this.list = list;
     }
 
-    public List<String> getList() {
+    public Set<String> getList() {
         return list;
     }
 
-    public void setList(List<String> list) {
+    public void setList(Set<String> list) {
         this.list = list;
     }
 
