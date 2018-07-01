@@ -3,8 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="f145bb59-7288-42dd-a783-9b2b44d63c76" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/TestCase/CMD.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/TestCase/CMD.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/TestCase/ExecuteInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/TestCase/ExecuteInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/TestCase/Statistics.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/TestCase/Statistics.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/TestCase/Utils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/TestCase/Utils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/capture/PackageCapture.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/capture/PackageCapture.java" afterDir="false" />
     </list>
@@ -19,29 +19,20 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Utils.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/TestCase/Utils.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="90">
-              <caret line="6" column="50" selection-start-line="6" selection-start-column="50" selection-end-line="6" selection-end-column="50" />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="PackageCapture.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/capture/PackageCapture.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1045">
-              <caret line="115" lean-forward="true" selection-start-line="115" selection-end-line="115" />
+            <state relative-caret-position="32">
+              <caret line="98" selection-start-line="98" selection-end-line="98" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ExecuteInfo.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="ExecuteInfo.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/TestCase/ExecuteInfo.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="99">
-              <caret line="113" column="28" selection-start-line="113" selection-start-column="28" selection-end-line="113" selection-end-column="28" />
+            <state relative-caret-position="269">
+              <caret line="132" column="55" selection-start-line="132" selection-start-column="51" selection-end-line="132" selection-end-column="55" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#5141#5168#0" />
@@ -63,11 +54,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Statistics.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Statistics.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/TestCase/Statistics.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
-              <caret line="18" column="23" lean-forward="true" selection-start-line="18" selection-start-column="23" selection-end-line="18" selection-end-column="23" />
+            <state relative-caret-position="186">
+              <caret line="82" column="17" selection-start-line="82" selection-start-column="17" selection-end-line="82" selection-end-column="17" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="method#run#0;class#Statistics#0" />
@@ -89,6 +80,8 @@
     <findStrings>
       <find>hashCode</find>
       <find>ha</find>
+      <find>get</find>
+      <find>ok</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -106,11 +99,11 @@
         <option value="$PROJECT_DIR$/100-host" />
         <option value="$PROJECT_DIR$/src/main/java/TestCase/IPLink.java" />
         <option value="$PROJECT_DIR$/src/main/java/TestCase/Parameter.java" />
-        <option value="$PROJECT_DIR$/src/main/java/TestCase/Statistics.java" />
         <option value="$PROJECT_DIR$/src/main/java/TestCase/CMD.java" />
         <option value="$PROJECT_DIR$/src/main/java/TestCase/Utils.java" />
         <option value="$PROJECT_DIR$/src/main/java/capture/PackageCapture.java" />
         <option value="$PROJECT_DIR$/src/main/java/TestCase/ExecuteInfo.java" />
+        <option value="$PROJECT_DIR$/src/main/java/TestCase/Statistics.java" />
       </list>
     </option>
   </component>
@@ -418,7 +411,14 @@
       <option name="project" value="LOCAL" />
       <updated>1530416933893</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="update UDP statistic + http get statistic">
+      <created>1530418581090</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1530418581090</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
@@ -437,7 +437,7 @@
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
       <window_info anchor="right" id="Maven Projects" order="4" />
       <window_info anchor="bottom" id="Version Control" order="10" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32831326" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.37650603" />
       <window_info anchor="bottom" id="Terminal" order="9" />
       <window_info id="Capture Tool" order="2" />
       <window_info id="Designer" order="3" />
@@ -807,9 +807,23 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/100-host">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="329">
+          <caret line="62" column="13" selection-start-line="62" selection-start-column="13" selection-end-line="62" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/TestCase/CMD.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="19" column="37" selection-start-line="19" selection-start-column="37" selection-end-line="19" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/TestCase/IPLink.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="527">
+        <state relative-caret-position="357">
           <caret line="40" column="5" selection-start-line="40" selection-start-column="5" selection-end-line="40" selection-end-column="5" />
           <folding>
             <element signature="e#427#428#0" expanded="true" />
@@ -820,10 +834,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/100-host">
+    <entry file="file://$PROJECT_DIR$/src/main/java/TestCase/Utils.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="329">
-          <caret line="62" column="13" selection-start-line="62" selection-start-column="13" selection-end-line="62" selection-end-column="13" />
+        <state relative-caret-position="90">
+          <caret line="6" column="38" lean-forward="true" selection-start-line="6" selection-start-column="38" selection-end-line="6" selection-end-column="38" />
         </state>
       </provider>
     </entry>
@@ -838,45 +852,31 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/TestCase/CMD.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="19" column="37" selection-start-line="19" selection-start-column="37" selection-end-line="19" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/TestCase/Statistics.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="18" column="23" lean-forward="true" selection-start-line="18" selection-start-column="23" selection-end-line="18" selection-end-column="23" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#run#0;class#Statistics#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/TestCase/Utils.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="6" column="50" selection-start-line="6" selection-start-column="50" selection-end-line="6" selection-end-column="50" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/capture/PackageCapture.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1045">
-          <caret line="115" lean-forward="true" selection-start-line="115" selection-end-line="115" />
+        <state relative-caret-position="32">
+          <caret line="98" selection-start-line="98" selection-end-line="98" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/TestCase/ExecuteInfo.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="99">
-          <caret line="113" column="28" selection-start-line="113" selection-start-column="28" selection-end-line="113" selection-end-column="28" />
+        <state relative-caret-position="269">
+          <caret line="132" column="55" selection-start-line="132" selection-start-column="51" selection-end-line="132" selection-end-column="55" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#5141#5168#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/TestCase/Statistics.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="186">
+          <caret line="82" column="17" selection-start-line="82" selection-start-column="17" selection-end-line="82" selection-end-column="17" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#run#0;class#Statistics#0" />
           </folding>
         </state>
       </provider>

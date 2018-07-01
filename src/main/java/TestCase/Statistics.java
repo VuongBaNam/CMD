@@ -78,7 +78,9 @@ public class Statistics{
             for(Item item : listFlow1){
                 String IPsrc = (String)item.getFieldValue(Flow.IP_SRC.toString());
                 String link = (String)item.getFieldValue(Flow.LINK.toString());
-                if (link == null ) continue;
+                if (link == null ) {
+                    continue;
+                }
                 IPLink ipLink = new IPLink(IPsrc,link);
                 if (map.containsKey(ipLink)){
                     int count = map.get(ipLink);

@@ -3,6 +3,7 @@ package capture;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.Inet4Address;
+import java.util.Date;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -113,6 +114,9 @@ public class PackageCapture {
             }
             String str = timeStamp +"\t"+ipSrc+"\t"+ipDst+"\t"+portSrc+"\t"+portDst+"\t"+pro+"\t"+packetLength+"\t"+link;
 //            System.out.println(str);
+//            if (link.length() > 0){
+//                System.out.println(new Date(System.currentTimeMillis())+"\t"+ipSrc + "\t"+ link);
+//            }
 
             queue.put(str);
 

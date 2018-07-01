@@ -53,6 +53,7 @@ public class ExecuteInfo implements Runnable{
             if (line == null) continue;
 
             item = createItem(line);
+
             double t = (Double) item.getFieldValue(Flow.TIME_STAMP.toString());
             if(start == 0){
                 start = t;
@@ -65,8 +66,11 @@ public class ExecuteInfo implements Runnable{
             }
             if (item != null) {
                 long byteCount = (Long) item.getFieldValue(Flow.BYTE_COUNT.toString());
+                String port_src = (String)item.getFieldValue(Flow.PORT_SRC.toString());
+                String port_dst = (String)item.getFieldValue(Flow.PORT_DST.toString());
                 if(byteCount > 450){
-                    number_dns_450++;
+                    if(port_src.equals("53") || port_dst.equals("53"))
+                        number_dns_450++;
                 }
 
                 itemPacket = (Double) item.getFieldValue(Flow.TIME_STAMP.toString());
@@ -123,6 +127,11 @@ public class ExecuteInfo implements Runnable{
                     if (first == null) {//first = null => gói tin vừa nhận được là gói tin đầu tiên của luồng
                         listFlow1.add(item);
                     } else {
+                        String link = (String)first.getFieldValue(Flow.LINK.toString());
+                        String link1 = (String)item.getFieldValue(Flow.LINK.toString());
+                        if(link == null && link1 != null){
+                            first.setAttribute(Flow.LINK.toString(),link1);
+                        }
                         first.setAttribute(Flow.COUNT.toString(), (Integer) first.getFieldValue(Flow.COUNT.toString()) + 1);
                     }
                 }
@@ -228,6 +237,7 @@ public class ExecuteInfo implements Runnable{
         if(a.length == 8){
             item.setAttribute(Flow.LINK.toString(),a[7]);
         }
+        else item.setAttribute(Flow.LINK.toString(),null);
 
         item.setAttribute(Flow.TIME_STAMP.toString(), Double.parseDouble(a[0]));
         item.setAttribute(Flow.IP_SRC.toString(),a[1]);
