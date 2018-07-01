@@ -82,7 +82,7 @@ public class ExecuteInfo implements Runnable{
 
                     String strJson = gson.toJson(par);
                     System.out.println(strJson);
-                    out.write("5S"+strJson+"\n");
+                    out.write("5S@"+strJson+"\n");
                     out.flush();
                     listFlow5.clear();
                     listIAT5.clear();

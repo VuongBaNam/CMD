@@ -21,7 +21,7 @@
       <file leaf-file-name="PackageCapture.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/capture/PackageCapture.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
+            <state relative-caret-position="17">
               <caret line="79" column="46" lean-forward="false" selection-start-line="79" selection-start-column="46" selection-end-line="79" selection-end-column="46" />
               <folding />
             </state>
@@ -31,30 +31,11 @@
       <file leaf-file-name="ExecuteInfo.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/TestCase/ExecuteInfo.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="935">
-              <caret line="84" column="33" lean-forward="false" selection-start-line="84" selection-start-column="33" selection-end-line="84" selection-end-column="33" />
+            <state relative-caret-position="17">
+              <caret line="84" column="34" lean-forward="false" selection-start-line="84" selection-start-column="34" selection-end-line="84" selection-end-column="34" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#5140#5167#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="IPLink.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/TestCase/IPLink.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="425">
-              <caret line="27" column="5" lean-forward="false" selection-start-line="27" selection-start-column="5" selection-end-line="27" selection-end-column="5" />
-              <folding>
-                <element signature="e#240#241#0" expanded="true" />
-                <element signature="e#265#266#0" expanded="true" />
-                <element signature="e#301#302#0" expanded="true" />
-                <element signature="e#329#330#0" expanded="true" />
-                <element signature="e#360#361#0" expanded="true" />
-                <element signature="e#387#388#0" expanded="true" />
-                <element signature="e#427#428#0" expanded="true" />
-                <element signature="e#459#460#0" expanded="true" />
+                <element signature="e#5141#5168#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -73,14 +54,12 @@
       <file leaf-file-name="Statistics.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/TestCase/Statistics.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="442">
+            <state relative-caret-position="629">
               <caret line="91" column="45" lean-forward="false" selection-start-line="91" selection-start-column="45" selection-end-line="91" selection-end-column="45" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="method#statistic#0;class#Statistics#0" expanded="false" />
-                <marker date="1530184982573" expanded="false" signature="3817:5555" ph="{...}" />
-                <marker date="1530184982573" expanded="true" signature="5611:7089" ph="{...}" />
-                <marker date="1530184982573" expanded="true" signature="7149:7522" ph="{...}" />
+                <element signature="method#run#0;class#Statistics#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -104,6 +83,11 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GradleLocalSettings">
+    <option name="externalProjectsViewState">
+      <projects_view />
+    </option>
+  </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
@@ -117,9 +101,9 @@
         <option value="$PROJECT_DIR$/src/main/java/TestCase/Parameter.java" />
         <option value="$PROJECT_DIR$/src/main/java/TestCase/Utils.java" />
         <option value="$PROJECT_DIR$/src/main/java/TestCase/Statistics.java" />
-        <option value="$PROJECT_DIR$/src/main/java/TestCase/ExecuteInfo.java" />
         <option value="$PROJECT_DIR$/100-host" />
         <option value="$PROJECT_DIR$/src/main/java/TestCase/IPLink.java" />
+        <option value="$PROJECT_DIR$/src/main/java/TestCase/ExecuteInfo.java" />
       </list>
     </option>
   </component>
@@ -158,7 +142,9 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="AndroidView" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -204,8 +190,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
-      <pane id="Scratches" />
       <pane id="PackagesPane" />
     </panes>
   </component>
@@ -415,7 +399,8 @@
       <workItem from="1529132431506" duration="2252000" />
       <workItem from="1529759000183" duration="502000" />
       <workItem from="1529808104297" duration="257000" />
-      <workItem from="1530184707563" duration="492000" />
+      <workItem from="1530184707563" duration="526000" />
+      <workItem from="1530416347784" duration="47000" />
     </task>
     <task id="LOCAL-00001" summary="update UDP statistic + http get statistic">
       <created>1528622113169</created>
@@ -466,11 +451,18 @@
       <option name="project" value="LOCAL" />
       <updated>1529759150576</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="update UDP statistic + http get statistic">
+      <created>1530185215653</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1530185215654</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="24588000" />
+    <option name="totallyTimeSpent" value="24669000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
@@ -535,9 +527,7 @@
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="method#statistic#0;class#Statistics#0" expanded="false" />
-            <marker date="1530184982573" expanded="false" signature="3817:5555" ph="{...}" />
-            <marker date="1530184982573" expanded="true" signature="5611:7089" ph="{...}" />
-            <marker date="1530184982573" expanded="true" signature="7149:7522" ph="{...}" />
+            <element signature="method#run#0;class#Statistics#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -556,7 +546,7 @@
           <caret line="84" column="50" lean-forward="false" selection-start-line="84" selection-start-column="50" selection-end-line="84" selection-end-column="50" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#5140#5167#0" expanded="false" />
+            <element signature="e#5141#5168#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -576,9 +566,7 @@
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="method#statistic#0;class#Statistics#0" expanded="false" />
-            <marker date="1530184982573" expanded="false" signature="3817:5555" ph="{...}" />
-            <marker date="1530184982573" expanded="true" signature="5611:7089" ph="{...}" />
-            <marker date="1530184982573" expanded="true" signature="7149:7522" ph="{...}" />
+            <element signature="method#run#0;class#Statistics#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -597,7 +585,7 @@
           <caret line="84" column="50" lean-forward="true" selection-start-line="84" selection-start-column="50" selection-end-line="84" selection-end-column="50" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#5140#5167#0" expanded="false" />
+            <element signature="e#5141#5168#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -633,9 +621,7 @@
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="method#statistic#0;class#Statistics#0" expanded="false" />
-            <marker date="1530184982573" expanded="false" signature="3817:5555" ph="{...}" />
-            <marker date="1530184982573" expanded="true" signature="5611:7089" ph="{...}" />
-            <marker date="1530184982573" expanded="true" signature="7149:7522" ph="{...}" />
+            <element signature="method#run#0;class#Statistics#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -654,7 +640,7 @@
           <caret line="113" column="34" lean-forward="false" selection-start-line="113" selection-start-column="34" selection-end-line="113" selection-end-column="34" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#5140#5167#0" expanded="false" />
+            <element signature="e#5141#5168#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -674,9 +660,7 @@
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="method#statistic#0;class#Statistics#0" expanded="false" />
-            <marker date="1530184982573" expanded="false" signature="3817:5555" ph="{...}" />
-            <marker date="1530184982573" expanded="true" signature="5611:7089" ph="{...}" />
-            <marker date="1530184982573" expanded="true" signature="7149:7522" ph="{...}" />
+            <element signature="method#run#0;class#Statistics#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -711,7 +695,7 @@
           <caret line="67" column="76" lean-forward="false" selection-start-line="67" selection-start-column="76" selection-end-line="67" selection-end-column="76" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#5140#5167#0" expanded="false" />
+            <element signature="e#5141#5168#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -731,9 +715,7 @@
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="method#statistic#0;class#Statistics#0" expanded="false" />
-            <marker date="1530184982573" expanded="false" signature="3817:5555" ph="{...}" />
-            <marker date="1530184982573" expanded="true" signature="5611:7089" ph="{...}" />
-            <marker date="1530184982573" expanded="true" signature="7149:7522" ph="{...}" />
+            <element signature="method#run#0;class#Statistics#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -751,14 +733,10 @@
         <state relative-caret-position="102">
           <caret line="6" column="15" lean-forward="false" selection-start-line="6" selection-start-column="15" selection-end-line="6" selection-end-column="15" />
           <folding>
-            <element signature="e#240#241#0" expanded="true" />
-            <element signature="e#265#266#0" expanded="true" />
-            <element signature="e#301#302#0" expanded="true" />
-            <element signature="e#329#330#0" expanded="true" />
-            <element signature="e#360#361#0" expanded="true" />
-            <element signature="e#387#388#0" expanded="true" />
             <element signature="e#427#428#0" expanded="true" />
             <element signature="e#459#460#0" expanded="true" />
+            <element signature="e#772#773#0" expanded="true" />
+            <element signature="e#816#817#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -769,7 +747,7 @@
           <caret line="7" column="0" lean-forward="false" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#5140#5167#0" expanded="false" />
+            <element signature="e#5141#5168#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -789,9 +767,7 @@
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="method#statistic#0;class#Statistics#0" expanded="false" />
-            <marker date="1530184982573" expanded="false" signature="3817:5555" ph="{...}" />
-            <marker date="1530184982573" expanded="true" signature="5611:7089" ph="{...}" />
-            <marker date="1530184982573" expanded="true" signature="7149:7522" ph="{...}" />
+            <element signature="method#run#0;class#Statistics#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -810,7 +786,7 @@
           <caret line="99" column="73" lean-forward="false" selection-start-line="99" selection-start-column="73" selection-end-line="99" selection-end-column="73" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#5140#5167#0" expanded="false" />
+            <element signature="e#5141#5168#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -822,9 +798,7 @@
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="method#statistic#0;class#Statistics#0" expanded="false" />
-            <marker date="1530184982573" expanded="false" signature="3817:5555" ph="{...}" />
-            <marker date="1530184982573" expanded="true" signature="5611:7089" ph="{...}" />
-            <marker date="1530184982573" expanded="true" signature="7149:7522" ph="{...}" />
+            <element signature="method#run#0;class#Statistics#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -845,7 +819,7 @@
           <caret line="216" column="39" lean-forward="false" selection-start-line="216" selection-start-column="39" selection-end-line="216" selection-end-column="39" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#5140#5167#0" expanded="false" />
+            <element signature="e#5141#5168#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -857,9 +831,7 @@
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="method#statistic#0;class#Statistics#0" expanded="false" />
-            <marker date="1530184982573" expanded="false" signature="3817:5555" ph="{...}" />
-            <marker date="1530184982573" expanded="true" signature="5611:7089" ph="{...}" />
-            <marker date="1530184982573" expanded="true" signature="7149:7522" ph="{...}" />
+            <element signature="method#run#0;class#Statistics#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -899,14 +871,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/capture/PackageCapture.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="79" column="46" lean-forward="false" selection-start-line="79" selection-start-column="46" selection-end-line="79" selection-end-column="46" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/TestCase/Parameter.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="187">
@@ -931,52 +895,54 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/TestCase/Statistics.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/capture/PackageCapture.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="442">
-          <caret line="91" column="45" lean-forward="false" selection-start-line="91" selection-start-column="45" selection-end-line="91" selection-end-column="45" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#statistic#0;class#Statistics#0" expanded="false" />
-            <marker date="1530184982573" expanded="false" signature="3817:5555" ph="{...}" />
-            <marker date="1530184982573" expanded="true" signature="5611:7089" ph="{...}" />
-            <marker date="1530184982573" expanded="true" signature="7149:7522" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/100-host">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="550">
-          <caret line="75" column="5" lean-forward="false" selection-start-line="75" selection-start-column="5" selection-end-line="75" selection-end-column="5" />
+        <state relative-caret-position="17">
+          <caret line="79" column="46" lean-forward="false" selection-start-line="79" selection-start-column="46" selection-end-line="79" selection-end-column="46" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/TestCase/IPLink.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="425">
-          <caret line="27" column="5" lean-forward="false" selection-start-line="27" selection-start-column="5" selection-end-line="27" selection-end-column="5" />
+        <state relative-caret-position="527">
+          <caret line="40" column="5" lean-forward="false" selection-start-line="40" selection-start-column="5" selection-end-line="40" selection-end-column="5" />
           <folding>
-            <element signature="e#240#241#0" expanded="true" />
-            <element signature="e#265#266#0" expanded="true" />
-            <element signature="e#301#302#0" expanded="true" />
-            <element signature="e#329#330#0" expanded="true" />
-            <element signature="e#360#361#0" expanded="true" />
-            <element signature="e#387#388#0" expanded="true" />
             <element signature="e#427#428#0" expanded="true" />
             <element signature="e#459#460#0" expanded="true" />
+            <element signature="e#772#773#0" expanded="true" />
+            <element signature="e#816#817#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/100-host">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="329">
+          <caret line="62" column="13" lean-forward="false" selection-start-line="62" selection-start-column="13" selection-end-line="62" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/TestCase/Statistics.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="629">
+          <caret line="91" column="45" lean-forward="false" selection-start-line="91" selection-start-column="45" selection-end-line="91" selection-end-column="45" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#statistic#0;class#Statistics#0" expanded="false" />
+            <element signature="method#run#0;class#Statistics#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/TestCase/ExecuteInfo.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="935">
-          <caret line="84" column="33" lean-forward="false" selection-start-line="84" selection-start-column="33" selection-end-line="84" selection-end-column="33" />
+        <state relative-caret-position="17">
+          <caret line="84" column="34" lean-forward="false" selection-start-line="84" selection-start-column="34" selection-end-line="84" selection-end-column="34" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#5140#5167#0" expanded="false" />
+            <element signature="e#5141#5168#0" expanded="false" />
           </folding>
         </state>
       </provider>
