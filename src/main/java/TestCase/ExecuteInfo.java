@@ -78,11 +78,22 @@ public class ExecuteInfo implements Runnable{
                 oldTimeStamp = itemPacket;
 
                 if(itemPacket - start5s > 5){
-                    ParameterUDP par = new Statistics(listFlow5,listIAT5).statisticUDP();
+                    Statistics statistics = new Statistics(listFlow5,listIAT5);
+                    EntropyPar par = statistics.statisticUDP();
+                    List<ParameterTCP> list = statistics.statisticTCP();
+
+                    List<String> listIP = new ArrayList<>();
+                    if(true/*nếu ip là tấn công*/){
+                        //add ip vào list IP
+                    }
+
                     if (par == null){
                         start = itemPacket;
                         continue;
                     }
+                    String listIPJson = gson.toJson(listIP);
+                    out.write("IP@"+listIPJson+"\n");
+                    out.flush();
 
                     String strJson = gson.toJson(par);
                     System.out.println(strJson);

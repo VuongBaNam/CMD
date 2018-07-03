@@ -14,9 +14,15 @@ import java.util.concurrent.TimeUnit;
  */
 public class CMD {
     public static void main(String[] args) throws InterruptedException {
-        Set<String> set = new HashSet<>();
-        set.add("10.0.0.1");
-        set.add("10.0.0.1");
-        System.out.println(set.size());
+        List<String> list = new ArrayList<>();
+        list.add("aaaaa");
+        list.add("bbbbb");
+        Gson gson = new Gson();
+        String str = gson.toJson(list);
+        System.out.println(str);
+        List<String> l = gson.fromJson(str,ArrayList.class);
+        System.out.println(l.get(0));
+        System.out.println(l.get(1));
+        System.out.println(l.size());
     }
 }

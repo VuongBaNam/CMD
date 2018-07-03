@@ -1,13 +1,13 @@
 package TestCase;
 
-public class ParameterUDP {
+public class EntropyPar {
     double ENTROPY_IP_SRC;
     double ENTROPY_PORT_SRC;
     double ENTROPY_PORT_DST;
     double ENTROPY_PROTOCOL;
     long total_pkt;
 
-    public ParameterUDP(double ENTROPY_IP_SRC, double ENTROPY_PORT_SRC, double ENTROPY_PORT_DST, double ENTROPY_PROTOCOL,long total_pkt) {
+    public EntropyPar(double ENTROPY_IP_SRC, double ENTROPY_PORT_SRC, double ENTROPY_PORT_DST, double ENTROPY_PROTOCOL, long total_pkt) {
         this.ENTROPY_IP_SRC = ENTROPY_IP_SRC;
         this.ENTROPY_PORT_SRC = ENTROPY_PORT_SRC;
         this.ENTROPY_PORT_DST = ENTROPY_PORT_DST;

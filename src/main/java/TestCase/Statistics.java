@@ -11,6 +11,7 @@ public class Statistics{
         this.listFlow1 = listFlow1;
         this.listIAT1 = listIAT1;
     }
+
     public Parameter statistic() throws IOException {
         if(listFlow1.size() != 0) {
 
@@ -67,9 +68,14 @@ public class Statistics{
         return null;
     }
 
-    public ParameterUDP statisticUDP() throws IOException {
-        ParameterUDP parameterUDP = getParameter(listFlow1);
+    public EntropyPar statisticUDP() throws IOException {
+        EntropyPar parameterUDP = getParameter(listFlow1);
         return parameterUDP;
+    }
+
+    public List<ParameterTCP> statisticTCP() throws IOException {
+        List<ParameterTCP> list = getParameterTCP(listFlow1);
+        return list;
     }
 
     public Set<String> statisticHttp(){
@@ -78,9 +84,6 @@ public class Statistics{
             for(Item item : listFlow1){
                 String IPsrc = (String)item.getFieldValue(Flow.IP_SRC.toString());
                 String link = (String)item.getFieldValue(Flow.LINK.toString());
-                if (link == null ) {
-                    continue;
-                }
                 IPLink ipLink = new IPLink(IPsrc,link);
                 if (map.containsKey(ipLink)){
                     int count = map.get(ipLink);
@@ -100,6 +103,7 @@ public class Statistics{
         }
         return new HashSet<>();
     }
+
     public Par run() {
         if(listFlow1.size() != 0) {
 
@@ -150,7 +154,35 @@ public class Statistics{
         }
         return null;
     }
-    private ParameterUDP getParameter(List<Item> items){
+
+    private List<ParameterTCP> getParameterTCP(List<Item> items){
+        List<ParameterTCP> list = new ArrayList<>();
+        Map<String,Map<String,Long>> map = new HashMap<>();
+
+        for(Item item : items) {
+
+            long count = (Integer)item.getFieldValue(Flow.COUNT.toString());
+            String ip_s = (String)item.getFieldValue(Flow.IP_SRC.toString());
+            String port_s = (String)item.getFieldValue(Flow.PORT_SRC.toString());
+
+            Map<String,Long> port_src = new HashMap<>();
+            if(map.get(ip_s) == null){
+                port_src.put(port_s,count);
+                map.put(ip_s,port_src);
+            }else {
+                port_src = map.get(ip_s);
+                port_src.put(port_s,count);
+                map.put(ip_s,port_src);
+            }
+        }
+        for (Map.Entry<String,Map<String,Long>> entry : map.entrySet()){
+            ParameterTCP parameterTCP = new ParameterTCP(entry.getKey(),entropy(entry.getValue()));
+            list.add(parameterTCP);
+        }
+        return list;
+    }
+
+    private EntropyPar getParameter(List<Item> items){
         Map<String,Long> ip_src = new HashMap<>();
         Map<String,Long> port_src = new HashMap<>();
         Map<String,Long> port_dst = new HashMap<>();
@@ -180,7 +212,7 @@ public class Statistics{
                 protocol.put(proto,count);
             }else protocol.put(proto,protocol.get(proto)+count);
         }
-        ParameterUDP parameter = new ParameterUDP(entropy(ip_src),entropy(port_src),entropy(port_dst),entropy(protocol),total);
+        EntropyPar parameter = new EntropyPar(entropy(ip_src),entropy(port_src),entropy(port_dst),entropy(protocol),total);
         return parameter;
     }
 
