@@ -1,5 +1,6 @@
 package TestCase;
 
+import Jama.Matrix;
 import com.google.gson.Gson;
 
 import java.io.*;
@@ -82,10 +83,9 @@ public class ExecuteInfo implements Runnable{
                     EntropyPar par = statistics.statisticUDP();
                     List<ParameterTCP> list = statistics.statisticTCP();
 
-                    List<String> listIP = new ArrayList<>();
-                    if(true/*nếu ip là tấn công*/){
-                        //add ip vào list IP
-                    }
+                    KNN knn = new KNN(3);
+                    Matrix udp_dataset = knn.readFile("E:\\hoc tap\\CMD\\tcp_data.csv");
+                    List<String> listIP = knn.calculateBatch(udp_dataset, list);
 
                     if (par == null){
                         start = itemPacket;

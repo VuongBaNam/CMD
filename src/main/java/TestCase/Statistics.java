@@ -176,7 +176,7 @@ public class Statistics{
             }
         }
         for (Map.Entry<String,Map<String,Long>> entry : map.entrySet()){
-            ParameterTCP parameterTCP = new ParameterTCP(entry.getKey(),entropy(entry.getValue()));
+            ParameterTCP parameterTCP = new ParameterTCP(entry.getKey(),entry.getValue().size(),entropy(entry.getValue()));
             list.add(parameterTCP);
         }
         return list;
